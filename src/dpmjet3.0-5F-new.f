@@ -4902,11 +4902,7 @@ C            ENDIF
          ENDIF
     1    CONTINUE
          CALL DT_FFERMI(PABS)
-         CALL DT_DFERMI(PABSS)
-         WRITE(LOUT, 1002) 'PABS: ', PABS
- 1002    FORMAT(1X,A,E)
- !         WRITE(LOUT, 2222) 'PABS: ', PABS
- ! 2222    FORMAT(A,E)
+         !CALL DT_DFERMI(PABSS)
          PABS = PFERM*PABS
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
