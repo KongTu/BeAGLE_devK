@@ -17316,14 +17316,12 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      DIMENSION G(3)
-
-      G(1) = DT_RNDM(GGPART)
-      WRITE(LOUT,110) 'RANDOM NUMBER: ', G(1)
+      B = DT_RNDM(GGPART)
+      WRITE(LOUT,110) 'RANDOM NUMBER: ', B
   110 FORMAT (A,F5.2)
 
-      IF (G(1) .GT. 0.5) GOTO 30
-      IF (G(1) .LT. 0.5) GOTO 40
+      IF (B .GT. 0.5) GOTO 30
+      IF (B .LT. 0.5) GOTO 40
    20 RETURN
    30 GGPART = 1.0
       GOTO 20
