@@ -17290,6 +17290,10 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
       DO 10 I=1,3
         G(I)=DT_RNDM(GPART)
+        
+        WRITE(LOUT,110) 'RANDOM NUMBER: ', G(I)
+  110 FORMAT (A,D5.2)
+   
    10 CONTINUE
       IF (G(3).LT.G(2)) GOTO 40
       IF (G(3).LT.G(1)) GOTO 30
@@ -17318,8 +17322,8 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       DIMENSION G(3)
 
       G(1) = DT_RNDM(GGPART)
-      WRITE(LOUT,110) 'RANDOM NUMBER: ', G(1)
-  110 FORMAT (A,D5.2)
+  !     WRITE(LOUT,110) 'RANDOM NUMBER: ', G(1)
+  ! 110 FORMAT (A,D5.2)
 
       IF (G(1) .GT. 0.5) GOTO 30
       IF (G(1) .LT. 0.5) GOTO 40
