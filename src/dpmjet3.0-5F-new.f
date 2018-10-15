@@ -4902,7 +4902,7 @@ C            ENDIF
          ENDIF
     1    CONTINUE
          ! CALL DT_FFERMI(PABS)
-         IF (IFMDIST) THEN
+         IF (LFERMI) THEN
             CALL DT_FFERMI(PABS)
          ! ELSE
          !    CALL DT_DFERMI(PABS)
