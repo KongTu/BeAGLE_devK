@@ -1,0 +1,20 @@
+92,102d91
+< c...added by liang to include pythia energy loss datas
+<       double precision PF
+<       COMMON /CORECT/ PF(4)
+< 
+<       double precision PAUX
+<       COMMON /PFAUX/ PAUX(4)
+<       !identifier for the model types
+<       CHARACTER*8 CMODEL
+<       LOGICAL LPHOIN
+<       COMMON /DTMODL/ CMODEL(5),ELOJET,MCGENE,LPHOIN
+< 
+153,154c142
+< c...modified by liang to use uniform dtltra parameter in event generation            
+<             IF(MCGENE.NE.5)CALL DT_LTINI(IJPROJ,IJTARG,EPNI,DUM1,DUM2,0)
+---
+>             CALL DT_LTINI(IJPROJ,IJTARG,EPNI,DUM1,DUM2,0)
+616,617d603
+< C...added by liang to consider quenching effect from PyQM routines
+<             IF(MCGENE.EQ.5) PFSP(K)=PFSP(K)+PAUX(K)            

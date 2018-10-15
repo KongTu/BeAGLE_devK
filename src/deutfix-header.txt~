@@ -1,0 +1,32 @@
+      SUBROUTINE DEUTFIX(IDUMMY) 
+C
+C     2018-08-08 Mark D. Baker - Initial Version
+C
+C     This subroutine compensates for a flaw in the handling of 
+C     deuteron beams. BeAGLE (DPMJET) treats a deutron as a pair
+C     of on mass-shell nucleons with momentum pF and -pF (3-vector) 
+C     in the ion rest frame. But this violates energy conservation
+C     in this frame (4-momentum in general) since the n+p already
+C     have more energy than the deuteron (which is bound!) and any
+C     relative momentum between p + n only compounds the problem.
+C
+C     For larger nuclei, there is a mean field potential which reduces
+C     the energy of outgoing nucleons as well as a nuclear remnant to
+C     absorb any remaining 4-momentum imbalance. 
+C
+C     This routine should be called in the ion rest frame, and currently
+C     only for deuterons.
+C
+C     The goal here is to scale all momenta in the ion rest frame, 
+C     including the spectator by a common factor ASCALE so that the 
+C     Energy is correct. The momenta should add up to zero and will be 
+C     unaffected by the scale factor.
+C
+C     For 2 particles there is a reasonable exact formula.
+C     For 3 particles the exact formula is really complicated.
+C     For >3 particles I don't believe there is a closed form solution.
+C     Therefore we'll use an iterative procedure which assumes that
+C     ASCALE ~ 1. For N=2, the 1st step of the procedure uses the exact
+C     formula and should therefore converge immediately. 
+C
+      IMPLICIT NONE
