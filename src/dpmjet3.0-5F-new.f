@@ -4901,11 +4901,12 @@ C            ENDIF
             LSTART = .FALSE.
          ENDIF
     1    CONTINUE
-         IF (IFMDIST) THEN
-            CALL DT_FFERMI(PABS)
-         ELSE
-            CALL DT_DFERMI(PABS)
-         ENDIF
+         CALL DT_FFERMI(PABS)
+         ! IF (IFMDIST) THEN
+         !    CALL DT_FFERMI(PABS)
+         ! ELSE
+         !    CALL DT_DFERMI(PABS)
+         ! ENDIF
          PABS = PFERM*PABS
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
