@@ -2952,7 +2952,7 @@ C     COMMON /PQCTRL/ PQRECF, PYQ_SUPF, PYQ_IPTF, PYQ_IEG
       LFERMI    = .TRUE.
 
 * Fermi momentum controls in DTFLG1
-      ! IFMDIST = 0
+      IFMDIST = 1
       IFMPOST = 0
 
 * common /HNTHRE/
