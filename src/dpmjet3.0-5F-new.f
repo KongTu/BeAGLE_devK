@@ -4906,8 +4906,6 @@ C            ENDIF
  1001    FORMAT(A,F5.3)
          !CALL DT_DFERMI(PABSS)
          PABS = PFERM*PABS
-         WRITE(LOUT,1002) 'PABS = ',PABS
- 1002    FORMAT(A,F5.3)
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
 C           IF (MOD(ILOOP,500).EQ.0) THEN
@@ -17308,7 +17306,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 *
 *===ffermi=============================================================*
 *
-      SUBROUTINE DT_FFERMI(GPART)
+      SUBROUTINE DT_FFERMI(GGPART)
 
 ************************************************************************
 * Sample realistic momentum k distribution in A > 2.                                *
@@ -17317,17 +17315,18 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      DOUBLE PRECISION XXX = 0.25
-      !GPART = DT_RNDM(GPART)
-      WRITE(LOUT,110) 'RANDOM NUMBER: ', XXX
+      DIMENSION G(3)
+
+      G(1) = DT_RNDM(GGPART)
+      WRITE(LOUT,110) 'RANDOM NUMBER: ', G(1)
   110 FORMAT (A,D5.2)
 
-      IF (GPART .GT. 0.5) GOTO 30
-      IF (GPART .LT. 0.5) GOTO 40
+      IF (G(1) .GT. 0.5) GOTO 30
+      IF (G(1) .LT. 0.5) GOTO 40
    20 RETURN
-   30 GPART = -1.0
+   30 GGPART = -1.0
       GOTO 20
-   40 GPART = 1.0
+   40 GGPART = 1.0
       GOTO 20
 
       END
