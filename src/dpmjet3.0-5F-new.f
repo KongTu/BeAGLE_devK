@@ -127,7 +127,7 @@ C     &                LEMCCK,LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT
 
 
 * fermi momentum 
-      COMMON /DTFLG1/ IFMDIST
+      ! COMMON /DTFLG1/ IFMDIST
         
 * nuclear potential
       LOGICAL LFERMI
