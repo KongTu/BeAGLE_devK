@@ -17319,9 +17319,9 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IF (KPART .LT. 0.5) GOTO 40
 
    20 RETURN
-   30 KPART = -1.0D0
+   30 KPART = -1.0
       GOTO 20
-   40 KPART = 1.0D0
+   40 KPART = 1.0
       GOTO 20
 
       END
