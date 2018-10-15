@@ -17292,7 +17292,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         G(I)=DT_RNDM(GPART)
         
         WRITE(LOUT,110) 'RANDOM NUMBER: ', G(I)
-  110 FORMAT (A,D5.2)
+  110 FORMAT (A,F5.2)
    
    10 CONTINUE
       IF (G(3).LT.G(2)) GOTO 40
