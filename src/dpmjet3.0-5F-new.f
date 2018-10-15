@@ -125,10 +125,6 @@ C      LOGICAL LEMCCK,LHADRO,LSEADI,LEVAPO
 C      COMMON /DTFLG1/ IFRAG(2),IRESCO,IMSHL,IRESRJ,IOULEV(6),
 C     &                LEMCCK,LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT
 
-
-* fermi momentum 
-      ! COMMON /DTFLG1/ IFMDIST
-        
 * nuclear potential
       LOGICAL LFERMI
       COMMON /DTNPOT/ PFERMP(2),PFERMN(2),FERMOD,
@@ -4893,10 +4889,10 @@ C            ENDIF
       LOGICAL LFERMI
       COMMON /DTNPOT/ PFERMP(2),PFERMN(2),FERMOD,
      &                EBINDP(2),EBINDN(2),EPOT(2,210),
-     &                ETACOU(2),ICOUL,LFERMI
+     &                ETACOU(2),ICOUL,LFERMI,IFMDIST
 
 * fermi momentum control
-      COMMON /DTFLG1/ IFMDIST
+      ! COMMON /DTFLG1/ IFMDIST
 
       DATA LSTART /.TRUE./
 
