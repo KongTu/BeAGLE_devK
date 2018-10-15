@@ -4901,10 +4901,11 @@ C            ENDIF
             LSTART = .FALSE.
          ENDIF
     1    CONTINUE
-         CALL DT_FFERMI(PABS)
-         WRITE(LOUT,1001) 'PABS = ',PABS
- 1001    FORMAT(A,F5.3)
-         !CALL DT_DFERMI(PABSS)
+         IF (IFMDIST) THEN
+            CALL DT_FFERMI(PABS)
+         ELSE
+            CALL DT_DFERMI(PABS)
+         ENDIF
          PABS = PFERM*PABS
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
@@ -17317,8 +17318,6 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       SAVE
 
       B = DT_RNDM(GGPART)
-      WRITE(LOUT,110) 'RANDOM NUMBER: ', B
-  110 FORMAT (A,F5.2)
 
       IF (B .GT. 0.5) GOTO 30
       IF (B .LT. 0.5) GOTO 40
