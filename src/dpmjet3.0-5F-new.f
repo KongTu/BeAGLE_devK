@@ -17353,14 +17353,15 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
    10 CONTINUE
 
-      GGPART = B
-      RETURN
 !Second calculate CDF and see if RANDOM NUMBER matches CDF, return X value.
 
-   !    CDFN = CDF
-   !    B = 0.0
-   !    CDF = 0.0
-   !    C = DT_RNDM(GGPART)
+      CDFN = CDF
+      B = 0.0
+      CDF = 0.0
+      C = DT_RNDM(GGPART)
+
+      GGPART = C
+      RETURN
 
    !    DO 20 I = 1,500
    !      Z0 = A0 * (EXP(-B0*B*B)/((1+C0*B*B)*(1+C0*B*B)))
