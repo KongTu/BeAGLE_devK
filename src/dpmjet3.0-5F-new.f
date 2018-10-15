@@ -17306,7 +17306,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 *
 *===ffermi=============================================================*
 *
-      SUBROUTINE DT_FFERMI(KPART)
+      SUBROUTINE DT_FFERMI(GPART)
 
 ************************************************************************
 * Sample realistic momentum k distribution in A > 2.                                *
@@ -17315,16 +17315,16 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      KPART = DT_RNDM(KPART)
-      WRITE(LOUT,110) 'RANDOM NUMBER: ', KPART
-  110 FORMAT (A,F5.3)
+      B = DT_RNDM(C)
+      WRITE(LOUT,110) 'RANDOM NUMBER: ', B
+  110 FORMAT (A,D5.3)
 
-      IF (KPART .GT. 0.5) GOTO 30
-      IF (KPART .LT. 0.5) GOTO 40
+      IF (B .GT. 0.5) GOTO 30
+      IF (B .LT. 0.5) GOTO 40
    20 RETURN
-   30 KPART = -1.0
+   30 GPART = -1.0
       GOTO 20
-   40 KPART = 1.0
+   40 GPART = 1.0
       GOTO 20
 
       END
