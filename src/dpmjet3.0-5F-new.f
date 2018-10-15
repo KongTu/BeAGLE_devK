@@ -4901,7 +4901,7 @@ C            ENDIF
             LSTART = .FALSE.
          ENDIF
     1    CONTINUE
-         CALL DT_DFERMI(PABS)
+         CALL DT_FFERMI(PABS)
          WRITE(LOUT,1001) 'PABS = ',PABS
  1001    FORMAT(A,F5.3)
          !CALL DT_DFERMI(PABSS)
@@ -17290,9 +17290,6 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
       DO 10 I=1,3
         G(I)=DT_RNDM(GPART)
-        
-        WRITE(LOUT,110) 'RANDOM NUMBER: ', G(I)
-  110 FORMAT (A,F5.2)
    
    10 CONTINUE
       IF (G(3).LT.G(2)) GOTO 40
@@ -17322,8 +17319,8 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       DIMENSION G(3)
 
       G(1) = DT_RNDM(GGPART)
-  !     WRITE(LOUT,110) 'RANDOM NUMBER: ', G(1)
-  ! 110 FORMAT (A,D5.2)
+      WRITE(LOUT,110) 'RANDOM NUMBER: ', G(1)
+  110 FORMAT (A,F5.2)
 
       IF (G(1) .GT. 0.5) GOTO 30
       IF (G(1) .LT. 0.5) GOTO 40
