@@ -4889,10 +4889,10 @@ C            ENDIF
       LOGICAL LFERMI
       COMMON /DTNPOT/ PFERMP(2),PFERMN(2),FERMOD,
      &                EBINDP(2),EBINDN(2),EPOT(2,210),
-     &                ETACOU(2),ICOUL,LFERMI,IFMDIST
+     &                ETACOU(2),ICOUL,LFERMI
 
 * fermi momentum control
-      ! COMMON /DTFLG1/ IFMDIST
+      COMMON /DTFLG1/ IFMDIST
 
       DATA LSTART /.TRUE./
 
