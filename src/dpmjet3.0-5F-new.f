@@ -2945,7 +2945,7 @@ C     COMMON /PQCTRL/ PQRECF, PYQ_SUPF, PYQ_IPTF, PYQ_IEG
          EPOT(I,24) = POTMES
          EPOT(I,25) = POTMES
    10 CONTINUE
-      FERMOD    = 0.55D0
+      FERMOD    = 1.00D0
       ETACOU(1) = ZERO
       ETACOU(2) = ZERO
       ICOUL     = 1
