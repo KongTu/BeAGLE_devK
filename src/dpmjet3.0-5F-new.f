@@ -4903,8 +4903,8 @@ C            ENDIF
     1    CONTINUE
          CALL DT_FFERMI(PABS)
          CALL DT_DFERMI(PABSS)
-         WRITE(*, 1001) 'PABS: ', PABS
- 1001    FORMAT(A,E)
+         WRITE(LOUT, 1002) 'PABS: ', PABS
+ 1002    FORMAT(1X,A,E)
  !         WRITE(LOUT, 2222) 'PABS: ', PABS
  ! 2222    FORMAT(A,E)
          PABS = PFERM*PABS
