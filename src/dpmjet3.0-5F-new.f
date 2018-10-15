@@ -4902,12 +4902,17 @@ C            ENDIF
          ENDIF
     1    CONTINUE
          CALL DT_FFERMI(PABS)
+         CALL DT_DFERMI(PABSS)
+         WRITE(LOUT, 1111) 'PABS: ', PABS
+ 1111    FORMAT(A,E)
+         WRITE(LOUT, 2222) 'PABSS: ', PABSS
+ 2222    FORMAT(A,E)
          PABS = PFERM*PABS
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
 C           IF (MOD(ILOOP,500).EQ.0) THEN
 C              WRITE(LOUT,1001) PABS,PBIND,ILOOP
-C1001          FORMAT(1X,'FER4M:    Fermi-mom. corr. for binding',
+ 
 C    &                ' energy ',2E12.3,I6)
 C           ENDIF
 C           GOTO 1
