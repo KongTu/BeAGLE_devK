@@ -4743,9 +4743,6 @@ C     &                LEMCCK,LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT
 * interface HADRIN-DPM
       COMMON /HNTHRE/ EHADTH,EHADLO,EHADHI,INTHAD,IDXTA
 
-* fermi momentum control
-      COMMON /DTFLG1/ IFMDIST
-
       DIMENSION PF(4),PFTOT(4),COORD(3,MAXNCL),JS(MAXNCL)
 
 * number of neutrons
