@@ -17315,13 +17315,13 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      C = 1.0D0
-      B = DT_RNDM(C)
-      WRITE(LOUT,110) 'RANDOM NUMBER: ', B
+      GPART = 1.0D0
+      GPART = DT_RNDM(GPART)
+      WRITE(LOUT,110) 'RANDOM NUMBER: ', GPART
   110 FORMAT (A,D5.3)
 
-      IF (B .GT. 0.5) GOTO 30
-      IF (B .LT. 0.5) GOTO 40
+      IF (GPART .GT. 0.5) GOTO 30
+      IF (GPART .LT. 0.5) GOTO 40
    20 RETURN
    30 GPART = -1.0
       GOTO 20
