@@ -17325,7 +17325,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       SAVE
 
 !MESSUP START:
-      DOUBLE PRECISION Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF
+      DOUBLE PRECISION Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
 
 !Deuteron parameters:
 
@@ -17360,27 +17360,24 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       CDF = 0.0
       C = DT_RNDM(GGPART)
 
-      GGPART = C
-      RETURN
+      DO 20 I = 1,500
+        Z0 = A0 * (EXP(-B0*B*B)/((1+C0*B*B)*(1+C0*B*B)))
+        Z1 = A1 * (EXP(-B1*B*B)/((1+C1*B*B)*(1+C1*B*B)))
+        Z2 = A2 * (EXP(-B2*B*B)/((1+C2*B*B)*(1+C2*B*B)))
+        CDF = CDF + (1.0/CDFN)*(Z0+Z1+Z2)
+        B = B + 0.01
 
-   !    DO 20 I = 1,500
-   !      Z0 = A0 * (EXP(-B0*B*B)/((1+C0*B*B)*(1+C0*B*B)))
-   !      Z1 = A1 * (EXP(-B1*B*B)/((1+C1*B*B)*(1+C1*B*B)))
-   !      Z2 = A2 * (EXP(-B2*B*B)/((1+C2*B*B)*(1+C2*B*B)))
-   !      CDF = CDF + (1.0/CDFN)*(Z0+Z1+Z2)
-   !      B = B + 0.01
+        CDFPLUS = CDF + 0.01
+        CDFMINUS = CDF - 0.01
 
-   !      IF( (C .GT. (CDF - 0.01)) .AND. (C .LT. (CDF + 0.01)) ) THEN
-   !        GOTO 40
-   !      ELSE
-   !        GOTO 20
-   !      ENDIF
+        IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
+          GGPART = B
+          RETURN
+        ELSE
+          GOTO 20
+        ENDIF
      
-   !   30 RETURN
-   !   40 GGPART = B
-   !      GOTO 30
-          
-   ! 20 CONTINUE
+   20 CONTINUE
 
 ! MESSUP END
 
