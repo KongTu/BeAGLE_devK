@@ -4906,13 +4906,13 @@ C            ENDIF
     1    CONTINUE
          ! Use IFMDIST, 3rd varaible in control card of FERMI, to switch between
          ! different k momentum distributions       
-         WRITE(LOUT,1001) 'IFMDIST NUMBER: ',IFMDIST
- 1001    FORMAT(A,I5)
-         IF (IFMDIST .EQ. 1) THEN
-            CALL DT_FFERMI(PABS)
-         ELSE
-            CALL DT_DFERMI(PABS)
-         ENDIF
+ !         WRITE(LOUT,1001) 'IFMDIST NUMBER: ',IFMDIST
+ ! 1001    FORMAT(A,I5)
+ !         IF (IFMDIST .EQ. 1) THEN
+         CALL DT_FFERMI(PABS)
+         ! ELSE
+         !    CALL DT_DFERMI(PABS)
+         ! ENDIF
          PABS = PFERM*PABS
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
@@ -17318,21 +17318,78 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       SUBROUTINE DT_FFERMI(GGPART)
 
 ************************************************************************
-* Sample realistic momentum k distribution in A > 2.                                *
+* Sample realistic momentum k distribution in A > 2. Now with Deuteron *
 ************************************************************************
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      B = DT_RNDM(GGPART)
+!MESSUP START:
+      DOUBLE PRECISION Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF
+
+!Deuteron parameters:
+
+      A0 = 157.4
+      B0 = 1.24
+      C0 = 18.3
+      A1 = 0.234
+      B1 = 1.27
+      C1 = 0.0
+      A2 = 0.00623
+      B2 = 0.220
+      C2 = 0.0 
+
+      B   = 0.0
+      CDF = 0.0
+
+!First calculate the nomarlization:
+
+      DO 10 I = 1,500
+        Z0 = A0 * (EXP(-B0*B*B)/((1+C0*B*B)*(1+C0*B*B)))
+        Z1 = A1 * (EXP(-B1*B*B)/((1+C1*B*B)*(1+C1*B*B)))
+        Z2 = A2 * (EXP(-B2*B*B)/((1+C2*B*B)*(1+C2*B*B)))
+        CDF = CDF + (Z0+Z1+Z2)
+        B = B + 0.01
+
+   10 CONTINUE
+
+!Second calculate CDF and see if RANDOM NUMBER matches CDF, return X value.
+
+      CDFN = CDF
+      B = 0.0
+      CDF = 0.0
+      C = DT_RNDM(GGPART)
+
+      DO 20 I = 1,500
+        Z0 = A0 * (EXP(-B0*B*B)/((1+C0*B*B)*(1+C0*B*B)))
+        Z1 = A1 * (EXP(-B1*B*B)/((1+C1*B*B)*(1+C1*B*B)))
+        Z2 = A2 * (EXP(-B2*B*B)/((1+C2*B*B)*(1+C2*B*B)))
+        CDF = CDF + (1.0/CDFN)*(Z0+Z1+Z2)
+        B = B + 0.01
+
+        IF( (C .GT. (CDF - 0.01)) .AND. (C .LT. (CDF + 0.01)) ) THEN
+          GOTO 40
+        ELSE
+          GOTO 20
+        ENDIF
+     
+     30 RETURN
+     40 GGPART = B
+        GOTO 30
+          
+   20 CONTINUE
+
+! MESSUP END
+
+   !    B = DT_RNDM(GGPART)
  
-      IF (B .GT. 0.5) GOTO 30
-      IF (B .LT. 0.5) GOTO 40
-   20 RETURN
-   30 GGPART = 0.0001
-      GOTO 20
-   40 GGPART = 0.001
-      GOTO 20
+   !    IF (B .GT. 0.5) GOTO 30
+   !    IF (B .LT. 0.5) GOTO 40
+   ! 20 RETURN
+   ! 30 GGPART = 0.0001
+   !    GOTO 20
+   ! 40 GGPART = 0.001
+   !    GOTO 20
 
       END
 ************************************************************************
