@@ -4901,7 +4901,7 @@ C            ENDIF
             LSTART = .FALSE.
          ENDIF
     1    CONTINUE
-         CALL DT_DFERMI(PABS)
+         CALL DT_FFERMI(PABS)
          PABS = PFERM*PABS
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
@@ -17300,6 +17300,30 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
       END
 
+*
+*===ffermi=============================================================*
+*
+      SUBROUTINE DT_FFERMI(KPART)
+
+************************************************************************
+* Sample realistic momentum k distribution in A > 2.                                *
+************************************************************************
+
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      SAVE
+
+      KPART = DT_RNDM(R)
+
+      IF (KPART .GT. 0.5) GOTO 30
+      IF (KPART .LT. 0.5) GOTO 40
+
+   20 RETURN
+   30 KPART = -1.0D0
+      GOTO 20
+   40 KPART = 1.0D0
+      GOTO 20
+
+      END
 ************************************************************************
 *                                                                      *
 *         2) Handling of parton flavors and particle indices           *
