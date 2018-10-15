@@ -4902,6 +4902,8 @@ C            ENDIF
          ENDIF
     1    CONTINUE
          CALL DT_FFERMI(PABS)
+         WRITE(LOUT,1001) 'PABS = ',PABS
+ 1001    FORMAT(/,A,F5.3)
          !CALL DT_DFERMI(PABSS)
          PABS = PFERM*PABS
 C        IF (PABS.GE.PBIND) THEN
