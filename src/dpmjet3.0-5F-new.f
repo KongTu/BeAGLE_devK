@@ -4901,6 +4901,8 @@ C            ENDIF
             LSTART = .FALSE.
          ENDIF
     1    CONTINUE
+         ! Use IFMDIST, 3rd varaible in control card of FERMI, to switch between
+         ! different k momentum distributions       
          IF (IFMDIST .EQ. 1) THEN
             CALL DT_FFERMI(PABS)
          ELSE
@@ -17322,9 +17324,9 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IF (B .GT. 0.5) GOTO 30
       IF (B .LT. 0.5) GOTO 40
    20 RETURN
-   30 GGPART = 1.0
+   30 GGPART = 0.0001
       GOTO 20
-   40 GGPART = 0.5
+   40 GGPART = 0.001
       GOTO 20
 
       END
