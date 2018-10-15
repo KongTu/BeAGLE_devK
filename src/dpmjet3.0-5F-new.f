@@ -4901,7 +4901,7 @@ C            ENDIF
             LSTART = .FALSE.
          ENDIF
     1    CONTINUE
-         CALL DT_FFERMI(PABS)
+         CALL DT_DFERMI(PABS)
          WRITE(LOUT,1001) 'PABS = ',PABS
  1001    FORMAT(A,F5.3)
          !CALL DT_DFERMI(PABSS)
