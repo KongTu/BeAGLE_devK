@@ -4710,9 +4710,6 @@ C      LOGICAL LEMCCK,LHADRO,LSEADI,LEVAPO
 C      COMMON /DTFLG1/ IFRAG(2),IRESCO,IMSHL,IRESRJ,IOULEV(6),
 C     &                LEMCCK,LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT
 
-* fermi momentum control
-      COMMON /DTFLG1/ IFMDIST
-      
 * auxiliary common for chain system storage (DTUNUC 1.x)
       COMMON /DTCHSY/ ISKPCH(8,MAXINT),IPOSP(MAXNCL),IPOST(MAXNCL)
 
