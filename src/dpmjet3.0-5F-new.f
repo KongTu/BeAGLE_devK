@@ -17318,7 +17318,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       SAVE
 
       B = DT_RNDM(GGPART)
-
+ 
       IF (B .GT. 0.5) GOTO 30
       IF (B .LT. 0.5) GOTO 40
    20 RETURN
