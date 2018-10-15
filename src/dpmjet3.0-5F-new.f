@@ -17325,9 +17325,9 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IF (G(1) .GT. 0.5) GOTO 30
       IF (G(1) .LT. 0.5) GOTO 40
    20 RETURN
-   30 GGPART = -1.0
+   30 GGPART = 1.0
       GOTO 20
-   40 GGPART = 1.0
+   40 GGPART = 0.5
       GOTO 20
 
       END
