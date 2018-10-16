@@ -4912,6 +4912,8 @@ C            ENDIF
 
          IF (IFMDIST .EQ. 1) THEN
             CALL DT_FFERMI(PABS)
+            WRITE(LOUT,1001) 'PABS: ',PABS
+ 1001       FORMAT(A,F5.2)
          ELSE
             CALL DT_DFERMI(PABS)
          ENDIF
