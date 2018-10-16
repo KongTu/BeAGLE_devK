@@ -4912,7 +4912,7 @@ C            ENDIF
 
 
  ! Switch not implemented yet
- 
+
  !       IF (IFMDIST .EQ. 1) THEN
          CALL DT_FFERMI(PABS)
          ! ELSE
@@ -17376,7 +17376,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         CDFMINUS = CDF - 0.002
 
         IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
-          GGPART = B
+          GGPART = X0
           RETURN
         ELSE
           GOTO 20
