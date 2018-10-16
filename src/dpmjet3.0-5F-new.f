@@ -4913,13 +4913,13 @@ C            ENDIF
          IF (IFMDIST .EQ. 1) THEN
             CALL DT_FFERMI(PABS)
             WRITE(LOUT,1001) 'PABS: ',PABS
- 1001       FORMAT(A,F5.5)
+ 1001       FORMAT(A,F5.3)
          ELSE
             CALL DT_DFERMI(PABS)
          ENDIF
          PABS = PFERM*PABS
          WRITE(LOUT,1002) 'PABS2: ',PABS
- 1002       FORMAT(A,F5.5)
+ 1002       FORMAT(A,F5.4)
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
 C           IF (MOD(ILOOP,500).EQ.0) THEN
@@ -4939,7 +4939,7 @@ C        ENDIF
          PYT  = CYTA*PABS
          PZT  = CZTA*PABS
          WRITE(LOUT,1003) 'PZT: ',PZT
- 1003       FORMAT(A,F5.5)
+ 1003       FORMAT(A,D5.2)
       ELSE
          ET   = AAM(KT)
          PXT  = 0.0D0
