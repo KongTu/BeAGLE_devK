@@ -4894,9 +4894,6 @@ C            ENDIF
 
       INCLUDE 'beagle.inc'
 
-      ! COMMON /DTFLG1/ IFRAG(2),IRESCO,IMSHL,IRESRJ,IOULEV(6),LEMCCK,
-      ! &                LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT,IFERPY,
-      ! &                IFMDIST,IFMPOST
 * fermi momentum control
       ! COMMON /DTFLG1/ IFMDIST
 
@@ -4913,16 +4910,11 @@ C            ENDIF
          ! Use IFMDIST, 3rd varaible in control card of FERMI, to switch between
          ! different k momentum distributions
 
-         WRITE(LOUT,1001) 'IFMDIST NUMBER: ',IFMDIST
- 1001    FORMAT(A,I5)
-
- ! Switch not implemented yet
-
- !       IF (IFMDIST .EQ. 1) THEN
-         CALL DT_FFERMI(PABS)
-         ! ELSE
-         !    CALL DT_DFERMI(PABS)
-         ! ENDIF
+         IF (IFMDIST .EQ. 1) THEN
+            CALL DT_FFERMI(PABS)
+         ELSE
+            CALL DT_DFERMI(PABS)
+         ENDIF
          PABS = PFERM*PABS
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
