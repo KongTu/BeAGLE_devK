@@ -17330,80 +17330,80 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      DIMENSION G(3)
+   !    DIMENSION G(3)
 
-      DO 10 I=1,3
-        G(I)=0.1D0
+   !    DO 10 I=1,3
+   !      G(I)=0.1D0
    
+   ! 10 CONTINUE
+   
+   !    G(1) = 0.1D0
+   !    G(2) = 0.1D0
+
+   !    IF (G(3).LT.G(2)) GOTO 40
+   !    IF (G(3).LT.G(1)) GOTO 30
+   !    GGPART = G(3)
+   ! 20 RETURN
+   ! 30 GGPART = G(1)
+   !    GOTO 20
+   ! 40 IF (G(2).LT.G(1)) GOTO 30
+   !    GGPART = G(2)
+   !    GOTO 20
+
+!MESSUP START:
+      DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
+
+!Deuteron parameters:
+
+      A0 = 157.4D0
+      B0 = 1.24D0
+      C0 = 18.3D0
+      A1 = 0.234D0
+      B1 = 1.27D0
+      C1 = 0.0D0
+      A2 = 0.00623D0
+      B2 = 0.220D0
+      C2 = 0.0D0 
+
+      X0   = 0.0D0
+      CDF = 0.0D0
+
+!First, calculate the nomarlization:
+
+      DO 10 I = 1,5000
+        Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
+        Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
+        Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
+        CDF = CDF + (Z0+Z1+Z2)*0.001D0
+        X0 = X0 + 0.001D0
+
    10 CONTINUE
-   
-      G(1) = 0.1D0
-      G(2) = 0.1D0
 
-      IF (G(3).LT.G(2)) GOTO 40
-      IF (G(3).LT.G(1)) GOTO 30
-      GGPART = G(3)
-   20 RETURN
-   30 GGPART = G(1)
-      GOTO 20
-   40 IF (G(2).LT.G(1)) GOTO 30
-      GGPART = G(2)
-      GOTO 20
+!Second, calculate CDF and see if RANDOM NUMBER matches CDF, return X0 value.
 
-! !MESSUP START:
-!       DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
+      CDFN = CDF
+      X0 = 0.0D0
+      CDF = 0.0D0
+      C = DT_RNDM(GGPART)
 
-! !Deuteron parameters:
+      DO 20 I = 1,5000
+        Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
+        Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
+        Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
+        CDF = CDF + (0.001D0/CDFN)*(Z0+Z1+Z2)
+        X0 = X0 + 0.001D0
 
-!       A0 = 157.4
-!       B0 = 1.24
-!       C0 = 18.3
-!       A1 = 0.234
-!       B1 = 1.27
-!       C1 = 0.0
-!       A2 = 0.00623
-!       B2 = 0.220
-!       C2 = 0.0 
+        CDFPLUS = CDF + 0.002D0
+        CDFMINUS = CDF - 0.002D0
 
-!       X0   = 0.0
-!       CDF = 0.0
-
-! !First, calculate the nomarlization:
-
-!       DO 10 I = 1,5000
-!         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
-!         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
-!         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-!         CDF = CDF + (Z0+Z1+Z2)*0.001
-!         X0 = X0 + 0.001
-
-!    10 CONTINUE
-
-! !Second, calculate CDF and see if RANDOM NUMBER matches CDF, return X0 value.
-
-!       CDFN = CDF
-!       X0 = 0.0
-!       CDF = 0.0
-!       C = DT_RNDM(GGPART)
-
-!       DO 20 I = 1,5000
-!         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
-!         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
-!         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-!         CDF = CDF + (0.001/CDFN)*(Z0+Z1+Z2)
-!         X0 = X0 + 0.001
-
-!         CDFPLUS = CDF + 0.002
-!         CDFMINUS = CDF - 0.002
-
-!         IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
-!           GGPART = X0
-!           RETURN
-!         ELSE
-!           GOTO 20
-!         ENDIF
+        IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
+          GGPART = X0
+          RETURN
+        ELSE
+          GOTO 20
+        ENDIF
      
-!    20 CONTINUE
+   20 CONTINUE
 
       END
 ************************************************************************
