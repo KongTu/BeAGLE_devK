@@ -17343,7 +17343,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IF (G(3).LT.G(2)) GOTO 40
       IF (G(3).LT.G(1)) GOTO 30
       GGPART = G(3)
-   20 RETURN GGPART
+   20 RETURN
    30 GGPART = G(1)
       GOTO 20
    40 IF (G(2).LT.G(1)) GOTO 30
