@@ -4938,8 +4938,8 @@ C        ENDIF
          PXT  = CXTA*PABS
          PYT  = CYTA*PABS
          PZT  = CZTA*PABS
-         WRITE(LOUT,1002) 'PZT: ',PZT
- 1002       FORMAT(A,F5.2)
+         WRITE(LOUT,1003) 'PZT: ',PZT
+ 1003       FORMAT(A,F5.2)
       ELSE
          ET   = AAM(KT)
          PXT  = 0.0D0
