@@ -17333,7 +17333,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       DIMENSION G(3)
 
       DO 10 I=1,3
-        G(I)=0.013D-02
+        G(I)=0.013F-02
    
    10 CONTINUE
    
