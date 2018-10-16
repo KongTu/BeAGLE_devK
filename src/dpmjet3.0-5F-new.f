@@ -4935,8 +4935,8 @@ C        ENDIF
          CYTA = POLS*SFE
          CZTA = POLC
          ET   = SQRT(PABS*PABS+AAM(KT)**2)
-         PXT  = 0.0D0
-         PYT  = 0.0D0
+         PXT  = CXTA*PABS
+         PYT  = CYTA*PABS
          PZT  = CZTA*PABS
          WRITE(LOUT,1003) 'PZT: ',PZT
  1003       FORMAT(A,F5.4)
@@ -17379,7 +17379,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         CDFMINUS = CDF - 0.002D0
 
         IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
-          GGPART = X0
+          GGPART = DBLE(X0)
           RETURN
         ELSE
           GOTO 20
