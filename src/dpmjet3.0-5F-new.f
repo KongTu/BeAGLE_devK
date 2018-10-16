@@ -11403,6 +11403,8 @@ C    &                                             -ENERGY(AIT,AITZ))
          ENDIF
          PFERMP(2) = FERMIT*AN*(AITZ/AIT)**0.333333D0
          PFERMN(2) = FERMIT*AN*((AIT-AITZ)/AIT)**0.33333D0
+         WRITE(LOUT,1001) 'fermi: ', PFERMP(2)
+ 1001       FORMAT(A,F5.3)
       ELSE
          PFERMP(2) = ZERO
          PFERMN(2) = ZERO
