@@ -4894,9 +4894,9 @@ C            ENDIF
 
       INCLUDE 'beagle.inc'
 
-      COMMON /DTFLG1/ IFRAG(2),IRESCO,IMSHL,IRESRJ,IOULEV(6),LEMCCK,
-      &                LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT,IFERPY,
-      &                IFMDIST,IFMPOST
+      ! COMMON /DTFLG1/ IFRAG(2),IRESCO,IMSHL,IRESRJ,IOULEV(6),LEMCCK,
+      ! &                LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT,IFERPY,
+      ! &                IFMDIST,IFMPOST
 * fermi momentum control
       ! COMMON /DTFLG1/ IFMDIST
 
