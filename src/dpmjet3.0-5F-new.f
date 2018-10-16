@@ -17325,7 +17325,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       SAVE
 
 !MESSUP START:
-      DOUBLE PRECISION Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
+      DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
 
 !Deuteron parameters:
 
@@ -17339,36 +17339,36 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       B2 = 0.220
       C2 = 0.0 
 
-      B   = 0.0
+      X0   = 0.0
       CDF = 0.0
 
-!First calculate the nomarlization:
+!First, calculate the nomarlization:
 
-      DO 10 I = 1,500
-        Z0 = A0 * (EXP(-B0*B*B)/((1+C0*B*B)*(1+C0*B*B)))
-        Z1 = A1 * (EXP(-B1*B*B)/((1+C1*B*B)*(1+C1*B*B)))
-        Z2 = A2 * (EXP(-B2*B*B)/((1+C2*B*B)*(1+C2*B*B)))
-        CDF = CDF + (Z0+Z1+Z2)
-        B = B + 0.01
+      DO 10 I = 1,5000
+        Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
+        Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
+        Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
+        CDF = CDF + (Z0+Z1+Z2)*0.001
+        X0 = X0 + 0.001
 
    10 CONTINUE
 
-!Second calculate CDF and see if RANDOM NUMBER matches CDF, return X value.
+!Second, calculate CDF and see if RANDOM NUMBER matches CDF, return X value.
 
       CDFN = CDF
-      B = 0.0
+      X0 = 0.0
       CDF = 0.0
       C = DT_RNDM(GGPART)
 
-      DO 20 I = 1,500
-        Z0 = A0 * (EXP(-B0*B*B)/((1+C0*B*B)*(1+C0*B*B)))
-        Z1 = A1 * (EXP(-B1*B*B)/((1+C1*B*B)*(1+C1*B*B)))
-        Z2 = A2 * (EXP(-B2*B*B)/((1+C2*B*B)*(1+C2*B*B)))
-        CDF = CDF + (1.0/CDFN)*(Z0+Z1+Z2)
-        B = B + 0.01
+      DO 20 I = 1,5000
+        Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
+        Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
+        Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
+        CDF = CDF + (0.001/CDFN)*(Z0+Z1+Z2)
+        X0 = X0 + 0.001
 
-        CDFPLUS = CDF + 0.01
-        CDFMINUS = CDF - 0.01
+        CDFPLUS = CDF + 0.002
+        CDFMINUS = CDF - 0.002
 
         IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
           GGPART = B
@@ -17378,18 +17378,6 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         ENDIF
      
    20 CONTINUE
-
-! MESSUP END
-
-   !    B = DT_RNDM(GGPART)
- 
-   !    IF (B .GT. 0.5) GOTO 30
-   !    IF (B .LT. 0.5) GOTO 40
-   ! 20 RETURN
-   ! 30 GGPART = 0.0001
-   !    GOTO 20
-   ! 40 GGPART = 0.001
-   !    GOTO 20
 
       END
 ************************************************************************
