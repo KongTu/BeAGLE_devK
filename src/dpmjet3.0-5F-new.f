@@ -4926,9 +4926,9 @@ C           ENDIF
 C           GOTO 1
 C        ENDIF
          CALL DT_DPOLI(POLC,POLS)
-         WRITE(LOUT,1001) 'RANDOM POLC POLS = ',POLC,POLS
- 1001       FORMAT(A,F5.3,F5.3)
          CALL DT_DSFECF(SFE,CFE)
+         WRITE(LOUT,1001) 'RANDOM SFE,CFE = ',SFE,' ',CFE
+ 1001       FORMAT(A,F5.3,A,F5.3)
          CXTA = POLS*CFE
          CYTA = POLS*SFE
          CZTA = POLC
