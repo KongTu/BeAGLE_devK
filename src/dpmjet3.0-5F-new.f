@@ -4898,7 +4898,7 @@ C            ENDIF
       &                LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT,IFERPY,
       &                IFMDIST,IFMPOST
 * fermi momentum control
-      COMMON /DTFLG1/ IFMDIST
+      ! COMMON /DTFLG1/ IFMDIST
 
       DATA LSTART /.TRUE./
 
