@@ -4905,10 +4905,15 @@ C            ENDIF
          ENDIF
     1    CONTINUE
          ! Use IFMDIST, 3rd varaible in control card of FERMI, to switch between
-         ! different k momentum distributions       
+         ! different k momentum distributions
+
  !         WRITE(LOUT,1001) 'IFMDIST NUMBER: ',IFMDIST
  ! 1001    FORMAT(A,I5)
- !         IF (IFMDIST .EQ. 1) THEN
+
+
+ ! Switch not implemented yet
+ 
+ !       IF (IFMDIST .EQ. 1) THEN
          CALL DT_FFERMI(PABS)
          ! ELSE
          !    CALL DT_DFERMI(PABS)
