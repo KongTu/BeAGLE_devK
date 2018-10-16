@@ -4891,6 +4891,12 @@ C            ENDIF
      &                EBINDP(2),EBINDN(2),EPOT(2,210),
      &                ETACOU(2),ICOUL,LFERMI
 
+
+      INCLUDE 'beagle.inc'
+
+      COMMON /DTFLG1/ IFRAG(2),IRESCO,IMSHL,IRESRJ,IOULEV(6),LEMCCK,
+      &                LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT,IFERPY,
+      &                IFMDIST,IFMPOST
 * fermi momentum control
       COMMON /DTFLG1/ IFMDIST
 
@@ -4907,8 +4913,8 @@ C            ENDIF
          ! Use IFMDIST, 3rd varaible in control card of FERMI, to switch between
          ! different k momentum distributions
 
- !         WRITE(LOUT,1001) 'IFMDIST NUMBER: ',IFMDIST
- ! 1001    FORMAT(A,I5)
+         WRITE(LOUT,1001) 'IFMDIST NUMBER: ',IFMDIST
+ 1001    FORMAT(A,I5)
 
 
  ! Switch not implemented yet
@@ -17328,6 +17334,12 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
+
+      INCLUDE 'beagle.inc'
+
+      COMMON /DTFLG1/ IFRAG(2),IRESCO,IMSHL,IRESRJ,IOULEV(6),LEMCCK,
+    &                LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT,IFERPY,
+    &                IFMDIST,IFMPOST
 
 !MESSUP START:
       DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
