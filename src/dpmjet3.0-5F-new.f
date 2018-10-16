@@ -4916,10 +4916,10 @@ C            ENDIF
  1001       FORMAT(A,F5.2)
          ELSE
             CALL DT_DFERMI(PABS)
-            WRITE(LOUT,1002) 'PABS: ',PABS
- 1002       FORMAT(A,F5.2)
          ENDIF
          PABS = PFERM*PABS
+         WRITE(LOUT,1002) 'PABS2: ',PABS
+ 1002       FORMAT(A,F5.2)
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
 C           IF (MOD(ILOOP,500).EQ.0) THEN
@@ -4938,6 +4938,8 @@ C        ENDIF
          PXT  = CXTA*PABS
          PYT  = CYTA*PABS
          PZT  = CZTA*PABS
+         WRITE(LOUT,1002) 'PZT: ',PZT
+ 1002       FORMAT(A,F5.2)
       ELSE
          ET   = AAM(KT)
          PXT  = 0.0D0
@@ -17329,26 +17331,6 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
-
-   !    DIMENSION G(3)
-
-   !    DO 10 I=1,3
-   !      G(I)=0.1D0
-   
-   ! 10 CONTINUE
-   
-   !    G(1) = 0.1D0
-   !    G(2) = 0.1D0
-
-   !    IF (G(3).LT.G(2)) GOTO 40
-   !    IF (G(3).LT.G(1)) GOTO 30
-   !    GGPART = G(3)
-   ! 20 RETURN
-   ! 30 GGPART = G(1)
-   !    GOTO 20
-   ! 40 IF (G(2).LT.G(1)) GOTO 30
-   !    GGPART = G(2)
-   !    GOTO 20
 
 !MESSUP START:
       DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
