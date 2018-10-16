@@ -4927,8 +4927,6 @@ C           GOTO 1
 C        ENDIF
          CALL DT_DPOLI(POLC,POLS)
          CALL DT_DSFECF(SFE,CFE)
-         WRITE(LOUT,1001) 'RANDOM SFE,CFE = ',SFE,' ',CFE
- 1001       FORMAT(A,F5.3,A,F5.3)
          CXTA = POLS*CFE
          CYTA = POLS*SFE
          CZTA = POLC
@@ -17328,60 +17326,63 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-!MESSUP START:
-      DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
+      GGPART = 0.001
+      RETURN
 
-!Deuteron parameters:
+! !MESSUP START:
+!       DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
 
-      A0 = 157.4
-      B0 = 1.24
-      C0 = 18.3
-      A1 = 0.234
-      B1 = 1.27
-      C1 = 0.0
-      A2 = 0.00623
-      B2 = 0.220
-      C2 = 0.0 
+! !Deuteron parameters:
 
-      X0   = 0.0
-      CDF = 0.0
+!       A0 = 157.4
+!       B0 = 1.24
+!       C0 = 18.3
+!       A1 = 0.234
+!       B1 = 1.27
+!       C1 = 0.0
+!       A2 = 0.00623
+!       B2 = 0.220
+!       C2 = 0.0 
 
-!First, calculate the nomarlization:
+!       X0   = 0.0
+!       CDF = 0.0
 
-      DO 10 I = 1,5000
-        Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
-        Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
-        Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-        CDF = CDF + (Z0+Z1+Z2)*0.001
-        X0 = X0 + 0.001
+! !First, calculate the nomarlization:
 
-   10 CONTINUE
+!       DO 10 I = 1,5000
+!         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
+!         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
+!         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
+!         CDF = CDF + (Z0+Z1+Z2)*0.001
+!         X0 = X0 + 0.001
 
-!Second, calculate CDF and see if RANDOM NUMBER matches CDF, return X value.
+!    10 CONTINUE
 
-      CDFN = CDF
-      X0 = 0.0
-      CDF = 0.0
-      C = DT_RNDM(GGPART)
+! !Second, calculate CDF and see if RANDOM NUMBER matches CDF, return X0 value.
 
-      DO 20 I = 1,5000
-        Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
-        Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
-        Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-        CDF = CDF + (0.001/CDFN)*(Z0+Z1+Z2)
-        X0 = X0 + 0.001
+!       CDFN = CDF
+!       X0 = 0.0
+!       CDF = 0.0
+!       C = DT_RNDM(GGPART)
 
-        CDFPLUS = CDF + 0.002
-        CDFMINUS = CDF - 0.002
+!       DO 20 I = 1,5000
+!         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
+!         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
+!         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
+!         CDF = CDF + (0.001/CDFN)*(Z0+Z1+Z2)
+!         X0 = X0 + 0.001
 
-        IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
-          GGPART = X0
-          RETURN
-        ELSE
-          GOTO 20
-        ENDIF
+!         CDFPLUS = CDF + 0.002
+!         CDFMINUS = CDF - 0.002
+
+!         IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
+!           GGPART = X0
+!           RETURN
+!         ELSE
+!           GOTO 20
+!         ENDIF
      
-   20 CONTINUE
+!    20 CONTINUE
 
       END
 ************************************************************************
