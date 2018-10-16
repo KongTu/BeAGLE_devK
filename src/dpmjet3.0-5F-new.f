@@ -17333,17 +17333,17 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       DIMENSION G(3)
 
       DO 10 I=1,3
-        G(I)=0.0D0
+        G(I)=0.1D0
    
    10 CONTINUE
    
-      G(1) = 0.0
-      G(2) = 0.0
+      G(1) = 0.1D0
+      G(2) = 0.1D0
 
       IF (G(3).LT.G(2)) GOTO 40
       IF (G(3).LT.G(1)) GOTO 30
       GGPART = G(3)
-   20 RETURN
+   20 RETURN GGPART
    30 GGPART = G(1)
       GOTO 20
    40 IF (G(2).LT.G(1)) GOTO 30
