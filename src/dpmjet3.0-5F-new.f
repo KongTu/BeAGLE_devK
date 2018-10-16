@@ -17333,7 +17333,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       DIMENSION G(3)
 
       DO 10 I=1,3
-        G(I)=DT_RNDM(GGPART)
+        G(I)=0.0001
    
    10 CONTINUE
    
