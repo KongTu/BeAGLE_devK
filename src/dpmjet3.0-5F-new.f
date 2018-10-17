@@ -17356,8 +17356,8 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-        CDF = CDF + (Z0+Z1+Z2)*0.01D0
-        X0 = X0 + 0.01D0
+        CDF = CDF + (Z0+Z1+Z2)*0.001D0
+        X0 = X0 + 0.001D0
 
    10 CONTINUE
 
@@ -17372,11 +17372,11 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-        CDF = CDF + (0.01D0/CDFN)*(Z0+Z1+Z2)
-        X0 = X0 + 0.01D0
+        CDF = CDF + (0.001D0/CDFN)*(Z0+Z1+Z2)
+        X0 = X0 + 0.001D0
 
-        CDFPLUS = CDF + 0.01D0
-        CDFMINUS = CDF - 0.01D0
+        CDFPLUS = CDF + 0.005D0
+        CDFMINUS = CDF - 0.005D0
 
         IF( (C .GE. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
           GGPART = X0
