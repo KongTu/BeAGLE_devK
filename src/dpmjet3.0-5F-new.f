@@ -17379,7 +17379,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         CDFMINUS = CDF - 0.002D0
 
         IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
-          GGPART = 0.001D0
+          GGPART = X0
           RETURN
         ELSE
           GOTO 20
