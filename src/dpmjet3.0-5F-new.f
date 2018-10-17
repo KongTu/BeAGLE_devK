@@ -4864,7 +4864,7 @@ C            ENDIF
 * Special treatment for Deuteron
       IF (NMASS.EQ.2) THEN
         DO 7 K=1,4
-            PHKK(K,2) = -1.0D0*PHKK(K,1)
+            PHKK(K,1) = -1.0D0*PHKK(K,0)
     7   CONTINUE
       ENDIF
 
