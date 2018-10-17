@@ -2302,6 +2302,11 @@ C         WRITE(*,*) '          USER3 = # of "partons"'
          WRITE(*,*) '          USER2 = W2try/W2corr - 1  after scaling'
 C         WRITE(*,*) '          USER3 = # of "partons"'
          WRITE(*,*) '          USER3 = # of iterations'
+      ELSEIF (USERSET.EQ.7) THEN
+         WRITE(*,*) 'USERSET 7 selected. fermi debug'
+         WRITE(*,*) '          USER1 = PABS'
+         WRITE(*,*) '          USER2 = FERM'
+         WRITE(*,*) '          USER3 = PZF'
       ENDIF
       GOTO 10
 
@@ -4920,6 +4925,8 @@ C            ENDIF
          PABS = PFERM*PABS
          WRITE(LOUT,1002) 'PABS2: ',PABS
  1002       FORMAT(A,F16.8)
+
+
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
 C           IF (MOD(ILOOP,500).EQ.0) THEN
@@ -4940,6 +4947,13 @@ C        ENDIF
          PZT  = CZTA*PABS
          WRITE(LOUT,1003) 'PZT: ',PZT
  1003       FORMAT(A,F15.4)
+
+         IF (USERSET.EQ.7) THEN
+               USER1 = PABS
+               USER2 = PFERM
+               USER3 = PZT
+         ENDIF
+
       ELSE
          ET   = AAM(KT)
          PXT  = 0.0D0
@@ -17353,12 +17367,9 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 !First, calculate the nomarlization:
 
       DO 10 I = 1,5000
-        ! Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
-        ! Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
-        ! Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-        Z0 = -X0 + 5.0D0
-        Z1 = 0.0D0
-        Z2 = 0.0D0
+        Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
+        Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
+        Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
         CDF = CDF + (Z0+Z1+Z2)*0.001D0
         X0 = X0 + 0.001D0
 
@@ -17372,12 +17383,9 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       C = DT_RNDM(GGPART)
 
       DO 20 I = 1,5000
-        ! Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
-        ! Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
-        ! Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-        Z0 = -X0 + 5.0D0
-        Z1 = 0.0D0
-        Z2 = 0.0D0
+        Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
+        Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
+        Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
         CDF = CDF + (0.001D0/CDFN)*(Z0+Z1+Z2)
         X0 = X0 + 0.001D0
 
