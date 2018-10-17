@@ -17375,10 +17375,10 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         CDF = CDF + (0.001D0/CDFN)*(Z0+Z1+Z2)
         X0 = X0 + 0.001D0
 
-        CDFPLUS = CDF + 0.01D0
-        CDFMINUS = CDF - 0.01D0
+        CDFPLUS = CDF + 0.001D0
+        CDFMINUS = CDF - 0.001D0
 
-        IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
+        IF( (C .GE. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
           GGPART = X0
           RETURN
         ELSE
