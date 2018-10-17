@@ -4923,7 +4923,7 @@ C            ENDIF
          ! different k momentum distributions
 
          IF (IFMDIST .EQ. 1) THEN
-            CALL DT_FFERMI(PABS)
+            CALL DT_KFERMI(PABS)
             WRITE(LOUT,1001) 'PABS: ',PABS
  1001       FORMAT(A,F16.6)
          ELSE
@@ -17344,7 +17344,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 *
 *===ffermi=============================================================*
 *
-      SUBROUTINE DT_FFERMI(GGPART)
+      SUBROUTINE DT_KFERMI(GGPART)
 
 ************************************************************************
 * Sample realistic momentum k distribution in A > 2. Now with Deuteron *
