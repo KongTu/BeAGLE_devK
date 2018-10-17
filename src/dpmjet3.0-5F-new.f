@@ -4849,8 +4849,8 @@ C            ENDIF
          WHKK(4,NHKK) = 0.0D0
     2 CONTINUE
 
-* balance Fermi-momenta
-      IF (NMASS.GE.2) THEN
+* balance Fermi-momenta for A > 2
+      IF (NMASS.GT.2) THEN
          DO 5 I=1,NMASS
             NC = NC+1
             DO 6 K=1,3
@@ -4859,6 +4859,13 @@ C            ENDIF
             PHKK(4,NC) = SQRT(PHKK(5,NC)**2+PHKK(1,NC)**2+
      &                        PHKK(2,NC)**2+PHKK(3,NC)**2)
     5    CONTINUE
+      ENDIF
+
+* Special treatment for Deuteron
+      IF (NMASS.EQ.2) THEN
+        DO 7 K=1,4
+            PHKK(K,1) = -1.0D0*PHKK(K,1)
+    7   CONTINUE
       ENDIF
 
       RETURN
