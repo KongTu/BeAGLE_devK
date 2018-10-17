@@ -17363,7 +17363,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
 !Second, calculate CDF and see if RANDOM NUMBER matches CDF, return X0 value.
 
-      CDFN = CDF
+      !CDFN = CDF
       X0 = 0.0D0
       CDF = 0.0D0
       C = DT_RNDM(GGPART)
