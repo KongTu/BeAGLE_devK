@@ -4913,7 +4913,7 @@ C            ENDIF
          IF (IFMDIST .EQ. 1) THEN
             CALL DT_FFERMI(PABS)
             WRITE(LOUT,1001) 'PABS: ',PABS
- 1001       FORMAT(A,F6.6)
+ 1001       FORMAT(A,F16.6)
          ELSE
             CALL DT_DFERMI(PABS)
          ENDIF
@@ -4939,7 +4939,7 @@ C        ENDIF
          PYT  = CYTA*PABS
          PZT  = CZTA*PABS
          WRITE(LOUT,1003) 'PZT: ',PZT
- 1003       FORMAT(A,F5.4)
+ 1003       FORMAT(A,F15.4)
       ELSE
          ET   = AAM(KT)
          PXT  = 0.0D0
@@ -17379,7 +17379,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         CDFMINUS = CDF - 0.002D0
 
         IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
-          GGPART = DBLE(X0)
+          GGPART = 0.001D0
           RETURN
         ELSE
           GOTO 20
