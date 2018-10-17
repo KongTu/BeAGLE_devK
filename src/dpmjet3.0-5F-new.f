@@ -4919,7 +4919,7 @@ C            ENDIF
          ENDIF
          PABS = PFERM*PABS
          WRITE(LOUT,1002) 'PABS2: ',PABS
- 1002       FORMAT(A,F5.5)
+ 1002       FORMAT(A,E)
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
 C           IF (MOD(ILOOP,500).EQ.0) THEN
