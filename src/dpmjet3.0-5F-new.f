@@ -17395,9 +17395,15 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
         CDF = CDF + (0.001D0/CDFN)*(Z0+Z1+Z2)
         X0 = X0 + 0.001D0
-
-        CDFPLUS = CDF + 0.0025D0
-        CDFMINUS = CDF - 0.0025D0
+        !T for tolorence
+        T = 1D-02
+        IF( CDF > 0.999D0 ) T = 1D-03
+        IF( CDF > 0.9999D0 ) T = 1D-04
+        IF( CDF > 0.99999D0 ) T = 1D-05
+        IF( CDF > 0.999999D0 ) T = 1D-06
+        IF( CDF > 0.9999999D0 ) T = 1D-07
+        CDFPLUS = CDF + T
+        CDFMINUS = CDF - T
 
         IF( (C .GT. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
           GGPART = X0
