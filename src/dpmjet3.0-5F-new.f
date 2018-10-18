@@ -17397,6 +17397,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         X0 = X0 + 0.001D0
         !T for tolorence
         T = 1D-02
+        IF( CDF > 0.6 ) WRITE(*,*) 'CDF VALUE = ',CDF
         IF( CDF > 0.999D0 ) WRITE(*,*) 'CDF VALUE = ',CDF
         IF( CDF > 0.990D0 ) T = 1D-03
         IF( CDF > 0.9990D0 ) T = 1D-04
