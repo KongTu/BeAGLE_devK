@@ -17380,7 +17380,11 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       X0 = 0.000D0
       CDF = 0.000D0
       CDFT = 0.000D0
+
+!Random number generation between 0 and 1     
       C = DT_RNDM(GGPART)
+!Random number generation between 0.999 and 1, to select higher k momentum tail
+      D = 0.999D0 + (1.0D0-0.999D0)*DT_RNDM(GGPART)  
 
       DO 20 I = 1,5000
         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
@@ -17395,12 +17399,12 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         CDFT = CDFT + (0.001D0/CDFN)*(Z0+Z1+Z2)
         !T for tolorence
         T = CDFT-CDF
-
+        Write(*,*)'TOLORENCE: ', T
         CDFPLUS = CDF + T
         CDFMINUS = CDF - 0.0D0
 
         IF( (C .GE. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
-          Write(*,*)'TOLORENCE: ', T
+          
           GGPART = X0
           RETURN
         ELSE
