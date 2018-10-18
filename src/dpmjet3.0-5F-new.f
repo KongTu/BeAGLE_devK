@@ -4850,7 +4850,7 @@ C            ENDIF
     2 CONTINUE
 
 * balance Fermi-momenta for A > 2
-      IF (NMASS.GT.2) THEN
+      IF (NMASS.GE.2 .AND. IFMDIST .EQ. 0) THEN
          DO 5 I=1,NMASS
             NC = NC+1
             DO 6 K=1,3
@@ -4862,7 +4862,7 @@ C            ENDIF
       ENDIF
 
 * Special treatment for Deuteron
-      IF (NMASS.EQ.2) THEN
+      IF (NMASS.EQ.2 .AND. IFMDIST .GT. 0) THEN
         DO 7 K=1,4
             PHKK(K,1) = -1.0D0*PHKK(K,0)
     7   CONTINUE
@@ -17395,12 +17395,12 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         CDFT = CDFT + (0.001D0/CDFN)*(Z0+Z1+Z2)
         !T for tolorence
         T = CDFT-CDF
-        Write(*,*)'TOLORENCE: ', T
 
         CDFPLUS = CDF + T
         CDFMINUS = CDF - 0.0D0
 
         IF( (C .GE. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
+          Write(*,*)'TOLORENCE: ', T
           GGPART = X0
           RETURN
         ELSE
