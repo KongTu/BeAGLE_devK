@@ -17385,8 +17385,10 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 !Second, calculate CDF and see if RANDOM NUMBER matches CDF, return X0 value.
 
       CDFN = CDF
-      X0 = 0.0D0
-      CDF = 0.0D0
+
+      WRITE(*,*) 'CDFN VALUE = ',CDFN
+      X0 = 0.000D0
+      CDF = 0.000D0
       C = DT_RNDM(GGPART)
 
       DO 20 I = 1,5000
@@ -17398,12 +17400,12 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         !T for tolorence
         T = 1D-02
         WRITE(*,*) 'CDF VALUE = ',CDF
-        IF( CDF > 0.999D0 ) WRITE(*,*) 'CDF HIGH VALUE = ',CDF
-        IF( CDF > 0.990D0 ) T = 1D-03
-        IF( CDF > 0.9990D0 ) T = 1D-04
-        IF( CDF > 0.99990D0 ) T = 1D-05
-        IF( CDF > 0.999990D0 ) T = 1D-06
-        IF( CDF > 0.9999990D0 ) T = 1D-07
+        ! IF( CDF > 0.999D0 ) WRITE(*,*) 'CDF HIGH VALUE = ',CDF
+        ! IF( CDF > 0.990D0 ) T = 1D-03
+        ! IF( CDF > 0.9990D0 ) T = 1D-04
+        ! IF( CDF > 0.99990D0 ) T = 1D-05
+        ! IF( CDF > 0.999990D0 ) T = 1D-06
+        ! IF( CDF > 0.9999990D0 ) T = 1D-07
         CDFPLUS = CDF + T
         CDFMINUS = CDF - T
 
