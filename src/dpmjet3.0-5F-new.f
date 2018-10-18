@@ -17365,18 +17365,18 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
 !First, calculate the nomarlization:
 
-   !    DO 10 I = 1,5000
-   !      Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
-   !      Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
-   !      Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-   !      CDF = CDF + (Z0+Z1+Z2)*0.001D0
-   !      X0 = X0 + 0.001D0
+      DO 10 I = 1,5000
+        Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
+        Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
+        Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
+        CDF = CDF + (Z0+Z1+Z2)*0.001D0
+        X0 = X0 + 0.001D0
 
-   ! 10 CONTINUE
+   10 CONTINUE
 
 !Second, calculate CDF and see if RANDOM NUMBER matches CDF, return X0 value.
 
-      CDFN = 27.8175D0
+      CDFN = CDF
       X0 = 0.000D0
       CDF = 0.000D0
       C = DT_RNDM(GGPART)
@@ -17388,7 +17388,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         CDF = CDF + (0.001D0/CDFN)*(Z0+Z1+Z2)
         X0 = X0 + 0.001D0
         !T for tolorence
-        T = 1D-02
+        T = 0.0D-02
         WRITE(*,*) 'CDF VALUE = ',CDF,' with I = ',I
         ! IF( CDF > 0.999D0 ) WRITE(*,*) 'CDF HIGH VALUE = ',CDF
         ! IF( CDF > 0.990D0 ) T = 1D-03
