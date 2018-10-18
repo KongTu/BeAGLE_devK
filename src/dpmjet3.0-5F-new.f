@@ -4924,16 +4924,10 @@ C            ENDIF
 
          IF (IFMDIST .EQ. 1) THEN
             CALL DT_KFERMI(PABS)
-            WRITE(LOUT,1001) 'PABS: ',PABS
- 1001       FORMAT(A,F16.6)
          ELSE
             CALL DT_DFERMI(PABS)
          ENDIF
          PABS = PFERM*PABS
-         WRITE(LOUT,1002) 'PABS2: ',PABS
- 1002       FORMAT(A,F16.8)
-
-
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
 C           IF (MOD(ILOOP,500).EQ.0) THEN
@@ -4952,8 +4946,6 @@ C        ENDIF
          PXT  = CXTA*PABS
          PYT  = CYTA*PABS
          PZT  = CZTA*PABS
-         WRITE(LOUT,1003) 'PZT: ',PZT
- 1003       FORMAT(A,F15.4)
 
          IF (USERSET.EQ.7) THEN
                USER1 = PABS
@@ -17386,7 +17378,6 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
       CDFN = CDF
 
-      WRITE(*,*) 'CDFN VALUE = ',CDFN
       X0 = 0.000D0
       CDF = 0.000D0
       C = DT_RNDM(GGPART)
@@ -17399,7 +17390,8 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         X0 = X0 + 0.001D0
         !T for tolorence
         T = 1D-02
-        WRITE(*,*) 'CDF VALUE = ',CDF
+        WRITE(LOUT,30) 'CDF VALUE = ',CDF
+    30  FORMAT(A,F16.8)  
         ! IF( CDF > 0.999D0 ) WRITE(*,*) 'CDF HIGH VALUE = ',CDF
         ! IF( CDF > 0.990D0 ) T = 1D-03
         ! IF( CDF > 0.9990D0 ) T = 1D-04
