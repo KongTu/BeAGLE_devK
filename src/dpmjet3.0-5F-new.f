@@ -17398,13 +17398,13 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
         CDFT = CDFT + (0.001D0/CDFN)*(Z0+Z1+Z2)
         !T for tolorence
-        T = CDFT-CDF
-        Write(*,*)'TOLORENCE: ', T
+        T = CDF-CDFT
+       
         CDFPLUS = CDF + T
         CDFMINUS = CDF - 0.0D0
 
         IF( (C .GE. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
-          
+          Write(*,*)'TOLORENCE: ', T
           GGPART = X0
           RETURN
         ELSE
