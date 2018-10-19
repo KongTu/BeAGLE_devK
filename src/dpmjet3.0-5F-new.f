@@ -4861,7 +4861,9 @@ C            ENDIF
     5    CONTINUE
       ENDIF
 
-* Special treatment for Deuteron
+* Special treatment for Deuteron, where IFMDIST can be 1 or 2 at the moment.
+* Proton and neutron are back-to-back in the rest frame
+
       IF (NMASS.EQ.2 .AND. IFMDIST .GT. 0) THEN
         DO 7 K=1,4
             PHKK(K,1) = -1.0D0*PHKK(K,0)
@@ -17334,22 +17336,21 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       END
 
 *
-*===ffermi=============================================================*
+*===Added by KONG TU for realistic intrinsic k momentum distribution===*
 *
       SUBROUTINE DT_KFERMI(GGPART,KRANGE)
 
 ************************************************************************
-* Sample realistic momentum k distribution in A > 2. Now with Deuteron *
+* Sample realistic momentum k distribution in A > 2. Now with Deuteron *            
 ************************************************************************
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-!MESSUP START:
       DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
-
       DOUBLE PRECISION CDFT(1:5000)
-!Deuteron parameters:
+
+!Deuteron parameters from PhysRevC.53.1689:
 
       A0 = 157.4D0
       B0 = 1.24D0
@@ -17376,6 +17377,8 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
    10 CONTINUE
 
 !Second, calculate CDF and see if RANDOM NUMBER matches CDF, return X0 value.
+!C and D can be switched using KRANGE (IFMDIST), where 1 is minimum-bias k-
+!distribution, and 2 starts to sample from 99.9% of the cross section (tail of k-momentum)
 
       CDFN = CDF
       X0 = 0.000D0
@@ -17398,7 +17401,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         X0 = X0 + 0.001D0
 
         CDFT(I) = CDF
-        !T for tolorence
+        !T for tolorence, this needs to be set dynamically
         IF( I .EQ. 1 ) THEN
           T = 0.005D0
         ELSE
