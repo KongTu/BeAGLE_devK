@@ -17409,7 +17409,6 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         CDFMINUS = CDF + 10D-13
 
         IF( (E .GE. CDFMINUS) .AND. (E .LT. CDFPLUS) ) THEN
-          Write(*,*)'TOLORENCE: ', T
           GGPART = X0
           RETURN
         ELSE
