@@ -4922,8 +4922,8 @@ C            ENDIF
          ! Use IFMDIST, 3rd varaible in control card of FERMI, to switch between
          ! different k momentum distributions
 
-         IF (IFMDIST .EQ. 1) THEN
-            CALL DT_KFERMI(PABS)
+         IF (IFMDIST .GE. 1) THEN
+            CALL DT_KFERMI(PABS,IFMDIST)
          ELSE
             CALL DT_DFERMI(PABS)
          ENDIF
@@ -17336,7 +17336,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 *
 *===ffermi=============================================================*
 *
-      SUBROUTINE DT_KFERMI(GGPART)
+      SUBROUTINE DT_KFERMI(GGPART,KRANGE)
 
 ************************************************************************
 * Sample realistic momentum k distribution in A > 2. Now with Deuteron *
@@ -17386,6 +17386,10 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 !Random number generation between 0.999 and 1, to select higher k momentum tail
       D = 0.999D0 + (1.0D0-0.999D0)*DT_RNDM(GGPART)  
 
+      E = C
+      IF( KRANGE .EQ. 1 ) E = C
+      IF( KRANGE .EQ. 2 ) E = D
+
       DO 20 I = 1,5000
         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
@@ -17404,7 +17408,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         CDFPLUS = CDF + T
         CDFMINUS = CDF + 10D-13
 
-        IF( (C .GE. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
+        IF( (E .GE. CDFMINUS) .AND. (E .LT. CDFPLUS) ) THEN
           Write(*,*)'TOLORENCE: ', T
           GGPART = X0
           RETURN
