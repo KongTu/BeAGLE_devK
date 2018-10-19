@@ -17346,8 +17346,9 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       SAVE
 
 !MESSUP START:
-      DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS,CDFT
+      DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
 
+      DOUBLE PRECISION CDFT(1:5000)
 !Deuteron parameters:
 
       A0 = 157.4D0
@@ -17379,7 +17380,6 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       CDFN = CDF
       X0 = 0.000D0
       CDF = 0.000D0
-      CDFT = 0.000D0
 
 !Random number generation between 0 and 1     
       C = DT_RNDM(GGPART)
@@ -17393,15 +17393,16 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         CDF = CDF + (0.001D0/CDFN)*(Z0+Z1+Z2)
         X0 = X0 + 0.001D0
 
-        Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
-        Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
-        Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-        CDFT = CDFT + (0.001D0/CDFN)*(Z0+Z1+Z2)
+        CDFT(I) = CDF
         !T for tolorence
-        T = CDF-CDFT
-       
+        IF( I .EQ. 1 ) THEN
+          T = 0.005D0
+        ELSE
+          T = CDFT(I)-CDFT(I-1)
+        ENDIF
+        
         CDFPLUS = CDF + T
-        CDFMINUS = CDF - 0.0D0
+        CDFMINUS = CDF + 10D-13
 
         IF( (C .GE. CDFMINUS) .AND. (C .LT. CDFPLUS) ) THEN
           Write(*,*)'TOLORENCE: ', T
