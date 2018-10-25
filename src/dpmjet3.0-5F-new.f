@@ -685,14 +685,16 @@ C        CALL SHMAKF(IDUM,IDUM,IEMUMA(NCOMPO),IEMUCH(NCOMPO))
 *                     given pF after the fact.                      *
 *                  +3 Pythia sub-event uses correct pF (NYI)        *
 *                                                 default: 1        *
-*       what (2) =    scale factor for Fermi-momentum               *
-*                                                 default: 0.55     *
-*       what (3) = Fermi momentum distribution 0=DPMJET             *
-*                                                 default: 0        *
+*       what (2) =    scale factor for Fermi-momentum  (D=0.55)     *
+*                         (should be set to 0.62 for what(3)>0)     *
+*       what (3) = Fermi momentum distribution                      *
+*                   0=DPMJET (D)                                    *
+*                   1=From PRC 53 (1996) 1689R: Deuteron only       *
+*                   2=High k tail only from version 1               *
 *       what (4) = post-processing to correct 4-momentum errors.    *
 *                   0=No                                            *
 *                   1=Correct energy in ion rest frame              *
-*                        needed for light ions (D) with no remnant.  *
+*                        needed for light ions (D) with no remnant. *
 *                                                 default: 0        *
 *       what (5,6), sdum   no meaning                               *
 *                                                                   *
@@ -17340,13 +17342,14 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       SUBROUTINE DT_KFERMI(GGPART,KRANGE)
 
 ************************************************************************
-* Sample realistic momentum k distribution in A > 2. Now with Deuteron *            
+* Sample realistic momentum k distribution in A > 2. Now with Deuteron *       
 ************************************************************************
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,CDFPLUS,CDFMINUS
+      DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,
+     &     CDFPLUS,CDFMINUS
       DOUBLE PRECISION CDFT(1:5000)
 
 !Deuteron parameters from PhysRevC.53.1689:
@@ -17364,7 +17367,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       X0   = 0.0D0
       CDF = 0.0D0
 
-!First, calculate the nomarlization:
+!First, calculate the normalization:
 
       DO 10 I = 1,5000
         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
