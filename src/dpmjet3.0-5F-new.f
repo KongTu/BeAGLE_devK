@@ -17413,7 +17413,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         ENDIF
         
         CDFPLUS = CDF + T
-        CDFMINUS = CDF + 10D-13
+        CDFMINUS = CDF + 10D-20
 
         IF( (E .GE. CDFMINUS) .AND. (E .LT. CDFPLUS) ) THEN
           GGPART = X0
