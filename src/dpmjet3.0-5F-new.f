@@ -17371,7 +17371,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
 !First, calculate the normalization:
 
-      DO 10 I = 1,5000
+      DO 10 I = 1,10000
         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
@@ -17397,7 +17397,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IF( KRANGE .EQ. 1 ) E = C
       IF( KRANGE .EQ. 2 ) E = D
 
-      DO 20 I = 1,5000
+      DO 20 I = 1,10000
         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
