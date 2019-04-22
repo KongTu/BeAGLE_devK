@@ -4894,7 +4894,8 @@ C            ENDIF
 * nucleon positions/coordinates and their momentum are sampled
 * before here. Now, the first step is to randomly pick a nucleon
 * and assign high momentum to it
-
+      
+      CALL DT_PICKSRC(PHKK,VHKK,NMASS)
 
 * balance Fermi-momenta for A > 2
       IF (NMASS.GE.2 .AND. IFMDIST .EQ. 0) THEN
@@ -4945,12 +4946,12 @@ C            ENDIF
       A = DT_RNDM(A00)
       DO 1 I=1,NMASS
         IF( (A .GE. (I-1)*(1D0/NMASS)) .AND. (A .LT. I*(1D0/NMASS)) )
-          WRITE(*,*) 'pick this nucleon: ', I
-          WRITE(*,*) 'nucleon px: ', PHKK(1,I)
-          WRITE(*,*) 'nucleon py: ', PHKK(2,I)
-          WRITE(*,*) 'nucleon pz: ', PHKK(3,I)
-          WRITE(*,*) 'nucleon Energy: ', PHKK(4,I)
-          WRITE(*,*) 'nucleon Mass: ', PHKK(5,I)
+          WRITE(*,*) 'pick this nucleon: ', I+1
+          WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
+          WRITE(*,*) 'nucleon py: ', PHKK(2,I+1)
+          WRITE(*,*) 'nucleon pz: ', PHKK(3,I+1)
+          WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
+          WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
         ELSE 
           GOTO 1
         ENDIF
