@@ -4946,7 +4946,7 @@ C            ENDIF
       
       A00 = DT_RNDM(A00)
       DO 1 I=1,NMASS
-        IF( (A00 .GE. (I-1)*(1D0/NMASS)) .AND. (A00 .LT. I*(1D0/NMASS)) )
+        IF( (A00.GE.((I-1)*(1D0/NMASS))).AND.(A00.LT.(I*(1D0/NMASS))) )
           WRITE(*,*) 'pick this nucleon: ', I+1
           WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
           WRITE(*,*) 'nucleon py: ', PHKK(2,I+1)
@@ -4957,7 +4957,6 @@ C            ENDIF
           GOTO 1
         ENDIF
     1 CONTINUE
-      ENDDO
 
       RETURN
       END
