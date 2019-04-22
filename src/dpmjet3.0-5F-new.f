@@ -4891,13 +4891,6 @@ C            ENDIF
          WHKK(4,NHKK) = 0.0D0
     2 CONTINUE
 
-* nucleon positions/coordinates and their momentum are sampled
-* before here. Now, the first step is to randomly pick a nucleon
-* and assign high momentum to it
-      
-      CALL DT_PICKSRC(PHKK,VHKK,NMASS)
-      WRITE(*,*) 'TEST'
-
 * balance Fermi-momenta for A > 2
       IF (NMASS.GE.2 .AND. IFMDIST .EQ. 0) THEN
          DO 5 I=1,NMASS
@@ -4921,6 +4914,13 @@ C            ENDIF
          PHKK(4,3) = SQRT(PHKK(5,3)**2+PHKK(1,3)**2+
      &                    PHKK(2,3)**2+PHKK(3,3)**2)
       ENDIF
+
+* nucleon positions/coordinates and their momentum are sampled
+* before here. Now, the first step is to randomly pick a nucleon
+* and assign high momentum to it
+      
+      CALL DT_PICKSRC(PHKK,VHKK,NMASS)
+      WRITE(*,*) 'TEST'
 
       RETURN
       END
