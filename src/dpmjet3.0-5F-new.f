@@ -4951,11 +4951,11 @@ C            ENDIF
       DO I=1,NMASS
         IF( (A00.GE.((I-1)*B00)) .AND. (A00.LT.(I*B00)) ) THEN
           WRITE(*,*) 'pick this nucleon: ', I+1
-          WRITE(*,*) 'nucleon px: ', PX1(1,I+1)
-          WRITE(*,*) 'nucleon py: ', PX1(2,I+1)
-          WRITE(*,*) 'nucleon pz: ', PX1(3,I+1)
-          WRITE(*,*) 'nucleon Energy: ', PX1(4,I+1)
-          WRITE(*,*) 'nucleon Mass: ', PX1(5,I+1)
+          WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
+          WRITE(*,*) 'nucleon py: ', PHKK(2,I+1)
+          WRITE(*,*) 'nucleon pz: ', PHKK(3,I+1)
+          WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
+          WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
         ENDIF
       ENDDO
       
