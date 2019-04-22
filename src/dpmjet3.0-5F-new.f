@@ -4957,6 +4957,7 @@ C            ENDIF
           GOTO 1
         ENDIF
     1 CONTINUE
+      ENDDO
 
       RETURN
       END
