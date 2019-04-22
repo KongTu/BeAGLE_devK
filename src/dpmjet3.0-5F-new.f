@@ -4896,6 +4896,7 @@ C            ENDIF
 * and assign high momentum to it
       
       CALL DT_PICKSRC(PHKK,VHKK,NMASS)
+      WRITE(*,*) 'TEST'
 
 * balance Fermi-momenta for A > 2
       IF (NMASS.GE.2 .AND. IFMDIST .EQ. 0) THEN
