@@ -4938,15 +4938,16 @@ C            ENDIF
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      DOUBLE PRECISION A00
+      DOUBLE PRECISION A00, B00, C00
 
       PARAMETER (PI=3.14159265359D+00)
 
       INCLUDE 'beagle.inc'
       
       A00 = DT_RNDM(A00)
-      DO 1 I=1,NMASS
-        IF( (A00.GE.((I-1)*(1D0/NMASS))).AND.(A00.LT.(I*(1D0/NMASS))) ) THEN
+      B00 = 1D0/NMASS
+      DO I=1,NMASS
+        IF( (A00.GE.((I-1)*B00)) .AND. (A00.LT.(I*B00)) ) THEN
           WRITE(*,*) 'pick this nucleon: ', I+1
           WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
           WRITE(*,*) 'nucleon py: ', PHKK(2,I+1)
@@ -4954,7 +4955,8 @@ C            ENDIF
           WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
           WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
         ENDIF
-    1 CONTINUE
+      ENDDO
+      
 
       RETURN
       END
