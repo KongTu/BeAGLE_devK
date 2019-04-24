@@ -4919,7 +4919,7 @@ C            ENDIF
 * before here. Now, the first step is to randomly pick a nucleon
 * and assign high momentum to it
       
-      CALL DT_PICKSRC(PHKK,VHKK,NMASS,PFER)
+      CALL DT_PICKSRC(PHKK,VHKK,NMASS,PFER,IFMDIST)
       WRITE(*,*) 'TEST'
 
       RETURN
@@ -4933,7 +4933,7 @@ C            ENDIF
 *===picksrc==============================================================*
 *
 
-      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS,PFER)
+      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS,PFER,IFMDIST)
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
@@ -4948,6 +4948,7 @@ C            ENDIF
       
       A00 = DT_RNDM(A00)
       B00 = 1D0/NMASS
+      C00 = 999D0
       DO I=1,NMASS
         IF( (A00.GE.((I-1)*B00)) .AND. (A00.LT.(I*B00)) ) THEN
           WRITE(*,*) 'pick this nucleon: ', I+1
@@ -4977,9 +4978,51 @@ C            ENDIF
           WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
           WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
 
+          WRITE(*,*) 'nucleon position: ', I+1
+          WRITE(*,*) 'nucleon x: ', VHKK(1,I+1)
+          WRITE(*,*) 'nucleon y: ', VHKK(2,I+1)
+          WRITE(*,*) 'nucleon z: ', VHKK(3,I+1)
+
+          K1 = I
+          DO 1 J=1,NMASS
+            IF( J .EQ. K1 ) THEN 
+              GOTO 1
+          1 CONTINUE  
+            DIST2 = (VHKK(1,I+1)-VHKK(1,J+1))**2+(VHKK(2,I+1)-VHKK(2,J+1))**2+
+          &         (VHKK(3,I+1)-VHKK(3,J+1))**2
+            IF( DIST2 < C00 .AND. DIST2 > 0E0 ) THEN
+              C00 = DIST2
+              K2 = J
+            ENDIF
+          ENDDO
+
+          WRITE(*,*) 'closest nucleon: ', K2+1
+          WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
+          WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
+          WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
+
         ENDIF
       ENDDO
-      
+
+      DO L=1,3
+        IF( VHKK(L,K1+1) .GT. VHKK(L,K2+1) ) THEN
+          VHKK(L,K1+1) = VHKK(L,K1+1) - SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )/4D0
+          VHKK(L,K2+1) = VHKK(L,K2+1) + SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )/4D0
+        ELSE
+          VHKK(L,K1+1) = VHKK(L,K1+1) + SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )/4D0
+          VHKK(L,K2+1) = VHKK(L,K2+1) - SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )/4D0
+        ENDIF
+      ENDDO
+
+      WRITE(*,*) 'After bringing nucleons closer: '
+      WRITE(*,*) 'K1 nucleon: ', K1+1
+      WRITE(*,*) 'nucleon x: ', VHKK(1,K1+1)
+      WRITE(*,*) 'nucleon y: ', VHKK(2,K1+1)
+      WRITE(*,*) 'nucleon z: ', VHKK(3,K1+1)
+      WRITE(*,*) 'K2 nucleon: ', K2+1
+      WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
+      WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
+      WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
 
       RETURN
       END
