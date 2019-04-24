@@ -5007,15 +5007,17 @@ C            ENDIF
         ENDIF
       ENDDO
 
-      IF( VHKK(1,K1+1).GT.VHKK(1,K2+1) ) THEN
-        TEMP = SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
-        TEMP = TEMP/4.0D0
-        VHKK(1,K1+1) = VHKK(1,K1+1) - TEMP
-      ELSE
-        TEMP = SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
-        TEMP = TEMP/4.0D0
-        VHKK(1,K1+1) = VHKK(1,K1+1) + TEMP
-      ENDIF
+      DO L=1,3
+        IF( VHKK(L,K1+1).GT.VHKK(L,K2+1) ) THEN
+          TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
+          TEMP = TEMP/4.0D0
+          VHKK(L,K1+1) = VHKK(L,K1+1) - TEMP
+        ELSE
+          TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
+          TEMP = TEMP/4.0D0
+          VHKK(L,K1+1) = VHKK(L,K1+1) + TEMP
+        ENDIF
+      ENDDO
      
 
       WRITE(*,*) 'After bringing nucleons closer: '
