@@ -4855,7 +4855,7 @@ C     IF (IMODE.GE.2) NPOINT(1) = NHKK+1
                PFER = PFERMN(MODE)
                PBIN = SQRT(2.0D0*EBINDN(MODE)*AAM(8))
             ENDIF
-            CALL DT_FER4M(PFER,PBIN,PF(1),PF(2),PF(3),PF(4),IDX)
+            CALL DT_FER4M(PFER,PBIN,PF(1),PF(2),PF(3),PF(4),IDX,NMASS)
             DO 3 K=1,4
                PFTOT(K) = PFTOT(K)+PF(K)
                PHKK(K,NHKK) = PF(K)
@@ -4919,7 +4919,7 @@ C            ENDIF
 * before here. Now, the first step is to randomly pick a nucleon
 * and assign high momentum to it
       
-      CALL DT_PICKSRC(PHKK,VHKK,NMASS,PFER)
+      CALL DT_PICKSRC(PHKK,VHKK,NMASS,PFER,IFMDIST)
       WRITE(*,*) 'TEST'
 
       RETURN
@@ -4933,7 +4933,7 @@ C            ENDIF
 *===picksrc==============================================================*
 *
 
-      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS,PFER)
+      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS,PFER,IFMDIST)
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
@@ -4947,77 +4947,103 @@ C            ENDIF
 
       INCLUDE 'beagle.inc'
       
-      A00 = DT_RNDM(A00)
-      B00 = 1D0/NMASS
-      C00 = 999D0
-      DO I=1,NMASS
-        IF( (A00.GE.((I-1)*B00)) .AND. (A00.LT.(I*B00)) ) THEN
-          WRITE(*,*) 'pick this nucleon: ', I+1
-          WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
-          WRITE(*,*) 'nucleon py: ', PHKK(2,I+1)
-          WRITE(*,*) 'nucleon pz: ', PHKK(3,I+1)
-          WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
-          WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
+* for now only A > 12 assign SRC pairs and bring them closer
 
-          CALL DT_KFERMI(P00,2)
-          P00=P00*PFER
+      IF( (NMASS .GE. 12) .AND. (IFMDIST .GE. 1) ) THEN
+        
+        A00 = DT_RNDM(A00)
+        B00 = 1D0/NMASS
+        C00 = 999D0
+        DO I=1,NMASS
+          IF( (A00.GE.((I-1)*B00)) .AND. (A00.LT.(I*B00)) ) THEN
+            WRITE(*,*) 'pick this nucleon: ', I+1
+            WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
+            WRITE(*,*) 'nucleon py: ', PHKK(2,I+1)
+            WRITE(*,*) 'nucleon pz: ', PHKK(3,I+1)
+            WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
+            WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
 
-          CALL DT_DPOLI(POLC,POLS)
-          CALL DT_DSFECF(SFE,CFE)
-          CXTA = POLS*CFE
-          CYTA = POLS*SFE
-          CZTA = POLC
-          PHKK(4,I+1)   = SQRT(P00*P00+PHKK(5,I+1)**2)
-          PHKK(1,I+1)  = CXTA*P00
-          PHKK(2,I+1)  = CYTA*P00
-          PHKK(3,I+1)  = CZTA*P00
+            CALL DT_KFERMI(P00,2)
+            P00=P00*PFER
 
-          WRITE(*,*) 'After SRC modification: '
-          WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
-          WRITE(*,*) 'nucleon py: ', PHKK(2,I+1)
-          WRITE(*,*) 'nucleon pz: ', PHKK(3,I+1)
-          WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
-          WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
+            CALL DT_DPOLI(POLC,POLS)
+            CALL DT_DSFECF(SFE,CFE)
+            CXTA = POLS*CFE
+            CYTA = POLS*SFE
+            CZTA = POLC
+            PHKK(4,I+1)   = SQRT(P00*P00+PHKK(5,I+1)**2)
+            PHKK(1,I+1)  = CXTA*P00
+            PHKK(2,I+1)  = CYTA*P00
+            PHKK(3,I+1)  = CZTA*P00
 
-          WRITE(*,*) 'nucleon position: ', I+1
-          WRITE(*,*) 'nucleon x: ', VHKK(1,I+1)
-          WRITE(*,*) 'nucleon y: ', VHKK(2,I+1)
-          WRITE(*,*) 'nucleon z: ', VHKK(3,I+1)
+            WRITE(*,*) 'After SRC modification: '
+            WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
+            WRITE(*,*) 'nucleon py: ', PHKK(2,I+1)
+            WRITE(*,*) 'nucleon pz: ', PHKK(3,I+1)
+            WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
+            WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
 
-          K1 = I
-          DO J=1,NMASS
-            IF( J .EQ. K1 ) THEN 
-              CONTINUE
-            ENDIF
-            DIST1 = (VHKK(1,K1+1)-VHKK(1,J+1))**2
-            DIST2 = (VHKK(2,K1+1)-VHKK(2,J+1))**2
-            DIST3 = (VHKK(3,K1+1)-VHKK(3,J+1))**2
-            DIST_3D = DIST1+DIST2+DIST3
-            IF( DIST_3D < C00 .AND. DIST_3D > 0D0 ) THEN
-              C00 = DIST_3D
-              K2 = J
-            ENDIF
-          ENDDO
+            WRITE(*,*) 'nucleon position: ', I+1
+            WRITE(*,*) 'nucleon x: ', VHKK(1,I+1)
+            WRITE(*,*) 'nucleon y: ', VHKK(2,I+1)
+            WRITE(*,*) 'nucleon z: ', VHKK(3,I+1)
 
-          WRITE(*,*) 'closest nucleon: ', K2+1
-          WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
-          WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
-          WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
+            K1 = I
+            DO J=1,NMASS
+              IF( J .EQ. K1 ) THEN 
+                CONTINUE
+              ENDIF
+              DIST1 = (VHKK(1,K1+1)-VHKK(1,J+1))**2
+              DIST2 = (VHKK(2,K1+1)-VHKK(2,J+1))**2
+              DIST3 = (VHKK(3,K1+1)-VHKK(3,J+1))**2
+              DIST_3D = DIST1+DIST2+DIST3
+              IF( DIST_3D < C00 .AND. DIST_3D > 0D0 ) THEN
+                C00 = DIST_3D
+                K2 = J
+              ENDIF
+            ENDDO
 
-        ENDIF
-      ENDDO
+            WRITE(*,*) 'closest nucleon: ', K2+1
+            WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
+            WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
+            WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
 
-      DO L=1,3
-        IF( VHKK(L,K1+1).GT.VHKK(L,K2+1) ) THEN
-          TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
-          TEMP = TEMP/4.0D0
-          VHKK(L,K1+1) = VHKK(L,K1+1) - TEMP
-        ELSE
-          TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
-          TEMP = TEMP/4.0D0
-          VHKK(L,K1+1) = VHKK(L,K1+1) + TEMP
-        ENDIF
-      ENDDO
+          ENDIF
+        ENDDO
+
+        DO L=1,3
+          IF( VHKK(L,K1+1).GT.VHKK(L,K2+1) ) THEN
+            TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
+            TEMP = TEMP/4.0D0
+            VHKK(L,K1+1) = VHKK(L,K1+1) - TEMP
+          ELSE
+            TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
+            TEMP = TEMP/4.0D0
+            VHKK(L,K1+1) = VHKK(L,K1+1) + TEMP
+          ENDIF
+        ENDDO
+
+      ENDIF  
+
+* for Deuteron only, if IFMDIST .GE. 1, bring them closer 
+      
+      IF( (NMASS .EQ. 2) .AND. (IFMDIST .GE. 1) ) THEN
+        K1 = 1
+        K2 = 2
+        DO L=1,3
+          IF( VHKK(L,K1+1).GT.VHKK(L,K2+1) ) THEN
+            TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
+            TEMP = TEMP/4.0D0
+            VHKK(L,K1+1) = VHKK(L,K1+1) - TEMP
+            VHKK(L,K2+1) = VHKK(L,K2+1) + TEMP
+          ELSE
+            TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
+            TEMP = TEMP/4.0D0
+            VHKK(L,K1+1) = VHKK(L,K1+1) + TEMP
+            VHKK(L,K2+1) = VHKK(L,K2+1) - TEMP
+          ENDIF
+        ENDDO
+      ENDIF
      
 
       WRITE(*,*) 'After bringing nucleons closer: '
@@ -5039,7 +5065,7 @@ C            ENDIF
 *
 *===fer4m==============================================================*
 *
-      SUBROUTINE DT_FER4M(PFERM,PBIND,PXT,PYT,PZT,ET,KT)
+      SUBROUTINE DT_FER4M(PFERM,PBIND,PXT,PYT,PZT,ET,KT,NMASS)
 
 ************************************************************************
 * Sampling of nucleon Fermi-momenta from distributions at T=0.         *
@@ -5085,7 +5111,7 @@ C            ENDIF
          ! Use IFMDIST, 3rd varaible in control card of FERMI, to switch between
          ! different k momentum distributions
 
-         IF (IFMDIST .GE. 1) THEN
+         IF ( (NMASS .EQ. 2 ) .AND. (IFMDIST .GE. 1) ) THEN
             CALL DT_KFERMI(PABS,IFMDIST)
          ELSE
             CALL DT_DFERMI(PABS)
