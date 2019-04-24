@@ -4919,7 +4919,7 @@ C            ENDIF
 * before here. Now, the first step is to randomly pick a nucleon
 * and assign high momentum to it
       
-      CALL DT_PICKSRC(PHKK,VHKK,NMASS)
+      CALL DT_PICKSRC(PHKK,VHKK,NMASS,PFER)
       WRITE(*,*) 'TEST'
 
       RETURN
@@ -4933,12 +4933,12 @@ C            ENDIF
 *===picksrc==============================================================*
 *
 
-      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS)
+      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS,PFER)
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      DOUBLE PRECISION A00, B00, C00
+      DOUBLE PRECISION A00, B00, C00, P00
 
       PARAMETER (PI=3.14159265359D+00)
 
@@ -4956,6 +4956,27 @@ C            ENDIF
           WRITE(*,*) 'nucleon pz: ', PHKK(3,I+1)
           WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
           WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
+
+          CALL DT_KFERMI(P00,2)
+          P00=P00*PFER
+
+          CALL DT_DPOLI(POLC,POLS)
+          CALL DT_DSFECF(SFE,CFE)
+          CXTA = POLS*CFE
+          CYTA = POLS*SFE
+          CZTA = POLC
+          PHKK(4,I+1)   = SQRT(P00*P00+PHKK(5,I+1)**2)
+          PHKK(1,I+1)  = CXTA*P00
+          PHKK(2,I+1)  = CYTA*P00
+          PHKK(3,I+1)  = CZTA*P00
+
+          WRITE(*,*) 'After SRC modification: '
+          WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
+          WRITE(*,*) 'nucleon py: ', PHKK(2,I+1)
+          WRITE(*,*) 'nucleon pz: ', PHKK(3,I+1)
+          WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
+          WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
+
         ENDIF
       ENDDO
       
