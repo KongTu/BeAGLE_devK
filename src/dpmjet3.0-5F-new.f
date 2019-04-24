@@ -4981,6 +4981,8 @@ C            ENDIF
               PHKK(3,I+1)  = PHKK(3,I+1)
             ENDIF  
 
+* find the nearest neighbor and record its index number K2
+
             K1 = I
             DO J=1,NMASS
               IF( J .EQ. K1 ) THEN 
@@ -4999,14 +5001,14 @@ C            ENDIF
           ENDIF
         ENDDO
 
-* start to bring them together at a distance of 1/n(k) fm
+* start to bring them together at a distance of ~ 1/n(k) fm
         
         DIST_VALUE = SQRT(C00)
         X_SPACE = (VHKK(1,K1+1) - VHKK(1,K2+1))/DIST_VALUE
         Y_SPACE = (VHKK(2,K1+1) - VHKK(2,K2+1))/DIST_VALUE
         Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
 
-        MOVE = (C00-(0.197D0/P00))/2D0
+        MOVE = (DIST_VALUE-(0.197D0/P00))/2D0
 
         VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
         VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
@@ -5027,25 +5029,32 @@ C            ENDIF
       ENDIF  
 
 * for Deuteron only, if IFMDIST .GE. 1, bring them closer 
-* by half way without changing momentum. IFMDIST = 1 already samples 
-* high momentum for deuteron.
+* at a distance ~ 1/n(k) without changing momentum. IFMDIST = 1 
+* already samples high momentum for deuteron.
 
       IF( (NMASS .EQ. 2) .AND. (IFMDIST .GE. 1) ) THEN
         K1 = 1
         K2 = 2
-        DO L=1,3
-          IF( VHKK(L,K1+1).GT.VHKK(L,K2+1) ) THEN
-            TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
-            TEMP = TEMP/4.0D0
-            VHKK(L,K1+1) = VHKK(L,K1+1) - TEMP
-            VHKK(L,K2+1) = VHKK(L,K2+1) + TEMP
-          ELSE
-            TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
-            TEMP = TEMP/4.0D0
-            VHKK(L,K1+1) = VHKK(L,K1+1) + TEMP
-            VHKK(L,K2+1) = VHKK(L,K2+1) - TEMP
-          ENDIF
-        ENDDO
+        DIST1 = (VHKK(1,K1+1)-VHKK(1,K2+1))**2
+        DIST2 = (VHKK(2,K1+1)-VHKK(2,K2+1))**2
+        DIST3 = (VHKK(3,K1+1)-VHKK(3,K2+1))**2
+        DIST_3D = DIST1+DIST2+DIST3
+        DIST_VALUE = SQRT(DIST_3D)
+        
+        X_SPACE = (VHKK(1,K1+1) - VHKK(1,K2+1))/DIST_VALUE
+        Y_SPACE = (VHKK(2,K1+1) - VHKK(2,K2+1))/DIST_VALUE
+        Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
+
+        P00 = SQRT(PHKK(1,K1+1)**2+PHKK(2,K1+1)**2+PHKK(3,K1+1)**2)
+        MOVE = (DIST_VALUE-(0.197D0/P00))/2D0
+
+        VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
+        VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
+        VHKK(3,K1+1) = VHKK(3,K1+1) - MOVE*Z_SPACE
+
+        VHKK(1,K2+1) = VHKK(1,K2+1) + MOVE*X_SPACE
+        VHKK(2,K2+1) = VHKK(2,K2+1) + MOVE*Y_SPACE
+        VHKK(3,K2+1) = VHKK(3,K2+1) + MOVE*Z_SPACE
       ENDIF
     
       RETURN
