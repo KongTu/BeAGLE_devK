@@ -4989,7 +4989,7 @@ C            ENDIF
               CONTINUE
             ENDIF 
             DIST2 = (VHKK(1,K1+1)-VHKK(1,J+1))**2+(VHKK(2,K1+1)-VHKK(2,J+1))**2+(VHKK(3,K1+1)-VHKK(3,J+1))**2
-            IF( DIST2 < C00 .AND. DIST2 > 0E0 ) THEN
+            IF( DIST2 < C00 .AND. DIST2 > 0D0 ) THEN
               C00 = DIST2
               K2 = J
             ENDIF
@@ -5005,11 +5005,11 @@ C            ENDIF
 
 
       IF( VHKK(1,K1+1) .GT. VHKK(1,K2+1) ) THEN
-        VHKK(1,K1+1) = VHKK(1,K1+1) - SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4D0
-        VHKK(1,K2+1) = VHKK(1,K2+1) + SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4D0
+        VHKK(1,K1+1) = VHKK(1,K1+1) - SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
+        VHKK(1,K2+1) = VHKK(1,K2+1) + SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
       ELSE
-        VHKK(1,K1+1) = VHKK(1,K1+1) + SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4D0
-        VHKK(1,K2+1) = VHKK(1,K2+1) - SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4D0
+        VHKK(1,K1+1) = VHKK(1,K1+1) + SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
+        VHKK(1,K2+1) = VHKK(1,K2+1) - SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
       ENDIF
      
 
