@@ -5008,15 +5008,15 @@ C            ENDIF
 
 
       IF( VHKK(1,K1+1).GT.VHKK(1,K2+1) ) THEN
-        VHKK(1,K1+1) = VHKK(1,K1+1) - SQRT( (VHKK(1,K1+1)-
-  &        VHKK(1,K2+1))**2 )/4.0D0
-        VHKK(1,K2+1) = VHKK(1,K2+1) + SQRT( (VHKK(1,K1+1)-
-  &        VHKK(1,K2+1))**2 )/4.0D0
+        VHKK(1,K1+1) = VHKK(1,K1+1) - 
+  &                 SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4.0D0
+        VHKK(1,K2+1) = VHKK(1,K2+1) +
+  &                 SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4.0D0
       ELSE
-        VHKK(1,K1+1) = VHKK(1,K1+1) + SQRT( (VHKK(1,K1+1)-
-  &        VHKK(1,K2+1))**2 )/4.0D0
-        VHKK(1,K2+1) = VHKK(1,K2+1) - SQRT( (VHKK(1,K1+1)-
-  &        VHKK(1,K2+1))**2 )/4.0D0
+        VHKK(1,K1+1) = VHKK(1,K1+1)+
+  &                 SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4.0D0
+        VHKK(1,K2+1) = VHKK(1,K2+1)-
+  &                 SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4.0D0
       ENDIF
      
 
