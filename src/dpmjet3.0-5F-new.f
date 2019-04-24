@@ -4988,10 +4988,13 @@ C            ENDIF
           DO J=1,NMASS
             IF( J .EQ. K1 ) THEN 
               CONTINUE
-            ENDIF 
-            DIST2 = (VHKK(1,K1+1)-VHKK(1,J+1))**2+(VHKK(2,K1+1)-VHKK(2,J+1))**2+(VHKK(3,K1+1)-VHKK(3,J+1))**2
-            IF( DIST2 < C00 .AND. DIST2 > 0D0 ) THEN
-              C00 = DIST2
+            ENDIF
+            DIST1 = (VHKK(1,K1+1)-VHKK(1,J+1))**2
+            DIST2 = (VHKK(2,K1+1)-VHKK(2,J+1))**2
+            DIST3 = (VHKK(3,K1+1)-VHKK(3,J+1))**2
+            DIST_3D = DIST1+DIST2+DIST3
+            IF( DIST_3D < C00 .AND. DIST_3D > 0D0 ) THEN
+              C00 = DIST_3D
               K2 = J
             ENDIF
           ENDDO
@@ -5004,20 +5007,14 @@ C            ENDIF
         ENDIF
       ENDDO
 
-
       IF( VHKK(1,K1+1).GT.VHKK(1,K2+1) ) THEN
-        
         TEMP = SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
         TEMP = TEMP/4.0D0
         VHKK(1,K1+1) = VHKK(1,K1+1) - TEMP
-        
-
       ELSE
-
         TEMP = SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
         TEMP = TEMP/4.0D0
         VHKK(1,K1+1) = VHKK(1,K1+1) + TEMP
-
       ENDIF
      
 
