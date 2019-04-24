@@ -5026,7 +5026,19 @@ C            ENDIF
       ENDIF  
 
 * for Deuteron only, if IFMDIST .GE. 1, bring them closer 
-      
+      K1 = 1
+      K2 = 2
+        
+      WRITE(*,*) 'Before bringing nucleons closer: '
+      WRITE(*,*) 'K1 nucleon: ', K1+1
+      WRITE(*,*) 'nucleon x: ', VHKK(1,K1+1)
+      WRITE(*,*) 'nucleon y: ', VHKK(2,K1+1)
+      WRITE(*,*) 'nucleon z: ', VHKK(3,K1+1)
+      WRITE(*,*) 'K2 nucleon: ', K2+1
+      WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
+      WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
+      WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
+
       IF( (NMASS .EQ. 2) .AND. (IFMDIST .GE. 1) ) THEN
         K1 = 1
         K2 = 2
