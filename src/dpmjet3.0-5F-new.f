@@ -4987,8 +4987,7 @@ C            ENDIF
           DO J=1,NMASS
             IF( J .EQ. K1 ) THEN 
               CONTINUE 
-            DIST2 = (VHKK(1,I+1)-VHKK(1,J+1))**2+(VHKK(2,I+1)-VHKK(2,J+1))**2+
-          &         (VHKK(3,I+1)-VHKK(3,J+1))**2
+            DIST2 = (VHKK(1,K1+1)-VHKK(1,J+1))**2+(VHKK(2,K1+1)-VHKK(2,J+1))**2+(VHKK(3,K1+1)-VHKK(3,J+1))**2
             IF( DIST2 < C00 .AND. DIST2 > 0E0 ) THEN
               C00 = DIST2
               K2 = J
