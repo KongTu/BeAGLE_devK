@@ -5003,15 +5003,15 @@ C            ENDIF
         ENDIF
       ENDDO
 
-      DO IDDX=1,3
-        IF( VHKK(IDDX,K1+1) .GT. VHKK(IDDX,K2+1) ) THEN
-          VHKK(IDDX,K1+1) = VHKK(IDDX,K1+1) - SQRT( (VHKK(IDDX,K1+1)-VHKK(IDDX,K2+1))**2 )/4D0
-          VHKK(IDDX,K2+1) = VHKK(IDDX,K2+1) + SQRT( (VHKK(IDDX,K1+1)-VHKK(IDDX,K2+1))**2 )/4D0
-        ELSE
-          VHKK(IDDX,K1+1) = VHKK(IDDX,K1+1) + SQRT( (VHKK(IDDX,K1+1)-VHKK(IDDX,K2+1))**2 )/4D0
-          VHKK(IDDX,K2+1) = VHKK(IDDX,K2+1) - SQRT( (VHKK(IDDX,K1+1)-VHKK(IDDX,K2+1))**2 )/4D0
-        ENDIF
-      ENDDO
+
+      IF( VHKK(1,K1+1) .GT. VHKK(1,K2+1) ) THEN
+        VHKK(1,K1+1) = VHKK(1,K1+1) - SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4D0
+        VHKK(1,K2+1) = VHKK(1,K2+1) + SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4D0
+      ELSE
+        VHKK(1,K1+1) = VHKK(1,K1+1) + SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4D0
+        VHKK(1,K2+1) = VHKK(1,K2+1) - SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4D0
+      ENDIF
+     
 
       WRITE(*,*) 'After bringing nucleons closer: '
       WRITE(*,*) 'K1 nucleon: ', K1+1
