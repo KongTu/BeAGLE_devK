@@ -4915,12 +4915,14 @@ C            ENDIF
      &                    PHKK(2,3)**2+PHKK(3,3)**2)
       ENDIF
 
-* nucleon positions/coordinates and their momentum are sampled
-* before here. Now, the first step is to randomly pick a nucleon
-* and assign high momentum to it
-      
+* nucleon positions/coordinates and their 
+* momentum are sampled before here. Then START picking SRC pairs:
+* 1) randomly pick a nucleon and assign high momentum to it with 20% probability when A > 12
+* 2) find nearest nucleon 
+* 3) calculate their distance and move them closer to each other with
+*    a distance of ~ 1/n(k) fm, so that the center of mass position remains the same
+* 4) for deuteron, only move them closer but without re-sampling momentum. 
       CALL DT_PICKSRC(PHKK,VHKK,NMASS,PFER)
-      WRITE(*,*) 'TEST'
 
       RETURN
       END
@@ -4947,27 +4949,22 @@ C            ENDIF
 
       INCLUDE 'beagle.inc'
       
-* for now only A > 12 assign SRC pairs and bring them closer
+* for now only A > 12 assign SRC pairs and bring them half way
+* closer without changing the center of mass position.
+
       IF( (NMASS .GE. 12) .AND. (IFMDIST .GE. 1) ) THEN
         A00 = DT_RNDM(A00)
         B00 = 1D0/NMASS
         C00 = 999D0
         DO I=1,NMASS
-          IF( (A00.GE.((I-1)*B00)) .AND. (A00.LT.(I*B00)) ) THEN
-            WRITE(*,*) 'pick this nucleon: ', I+1
-            WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
-            WRITE(*,*) 'nucleon py: ', PHKK(2,I+1)
-            WRITE(*,*) 'nucleon pz: ', PHKK(3,I+1)
-            WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
-            WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
-
-* now hard-coded 20% SRC probability
+          !randomly pick one nucleon with equal probability out of A nucleus
+          IF( (A00.GE.((I-1)*B00)) .AND. (A00.LT.(I*B00)) ) THEN 
             D00 = DT_RNDM(D00)
-            IF( D00 .LE. 0.2D0 ) THEN
-              WRITE(*,*) 'This is in SRC pair!'
-              CALL DT_KFERMI(P00,2)
+            IF( D00 .LE. 0.2D0 ) THEN ! now hard-coded 20% SRC nucleons probability
+              CALL DT_KFERMI(P00,2) !re-sample momentum using deuteron high momentum tail
               P00=P00*PFER
-
+              WRITE(*,*) 'Fermi momentum P00 ', P00
+              WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
               CALL DT_DPOLI(POLC,POLS)
               CALL DT_DSFECF(SFE,CFE)
               CXTA = POLS*CFE
@@ -4978,24 +4975,11 @@ C            ENDIF
               PHKK(2,I+1)  = CYTA*P00
               PHKK(3,I+1)  = CZTA*P00
             ELSE
-              WRITE(*,*) 'Not in SRC pair!'
               PHKK(4,I+1)  = PHKK(4,I+1)
               PHKK(1,I+1)  = PHKK(1,I+1)
               PHKK(2,I+1)  = PHKK(2,I+1)
               PHKK(3,I+1)  = PHKK(3,I+1)
             ENDIF  
-
-            WRITE(*,*) 'After SRC modification: '
-            WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
-            WRITE(*,*) 'nucleon py: ', PHKK(2,I+1)
-            WRITE(*,*) 'nucleon pz: ', PHKK(3,I+1)
-            WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
-            WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
-
-            WRITE(*,*) 'nucleon position: ', I+1
-            WRITE(*,*) 'nucleon x: ', VHKK(1,I+1)
-            WRITE(*,*) 'nucleon y: ', VHKK(2,I+1)
-            WRITE(*,*) 'nucleon z: ', VHKK(3,I+1)
 
             K1 = I
             DO J=1,NMASS
@@ -5012,41 +4996,43 @@ C            ENDIF
               ENDIF
             ENDDO
 
-            WRITE(*,*) 'closest nucleon: ', K2+1
-            WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
-            WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
-            WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
-
           ENDIF
         ENDDO
 
-        DO L=1,3
-          IF( VHKK(L,K1+1).GT.VHKK(L,K2+1) ) THEN
-            TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
-            TEMP = TEMP/4.0D0
-            VHKK(L,K1+1) = VHKK(L,K1+1) - TEMP
-          ELSE
-            TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
-            TEMP = TEMP/4.0D0
-            VHKK(L,K1+1) = VHKK(L,K1+1) + TEMP
-          ENDIF
-        ENDDO
+* start to bring them together at a distance of 1/n(k) fm
+        
+        DIST_VALUE = SQRT(C00)
+        X_SPACE = (VHKK(1,K1+1) - VHKK(1,K2+1))/DIST_VALUE
+        Y_SPACE = (VHKK(2,K1+1) - VHKK(2,K2+1))/DIST_VALUE
+        Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
+
+        MOVE = (C00-(0.197D0/P00))/2D0
+
+        VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
+        VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
+        VHKK(3,K1+1) = VHKK(3,K1+1) - MOVE*Z_SPACE
+
+        VHKK(1,K2+1) = VHKK(1,K2+1) + MOVE*X_SPACE
+        VHKK(2,K2+1) = VHKK(2,K2+1) + MOVE*Y_SPACE
+        VHKK(3,K2+1) = VHKK(3,K2+1) + MOVE*Z_SPACE
+
+        DIST1 = (VHKK(1,K1+1)-VHKK(1,K2+1))**2
+        DIST2 = (VHKK(2,K1+1)-VHKK(2,K2+1))**2
+        DIST3 = (VHKK(3,K1+1)-VHKK(3,K2+1))**2
+        DIST_3D = SQRT(DIST1+DIST2+DIST3)
+
+        WRITE(*,*) 'DONE with moving'
+        WRITE(*,*) 'CHECK new distance ~ ', DIST_3D
 
       ENDIF  
 
 * for Deuteron only, if IFMDIST .GE. 1, bring them closer 
+* by half way without changing momentum. IFMDIST = 1 already samples 
+* high momentum for deuteron.
+
       IF( (NMASS .EQ. 2) .AND. (IFMDIST .GE. 1) ) THEN
         K1 = 1
         K2 = 2
-        WRITE(*,*) 'Before bringing nucleons closer: '
-        WRITE(*,*) 'K1 nucleon: ', K1+1
-        WRITE(*,*) 'nucleon x: ', VHKK(1,K1+1)
-        WRITE(*,*) 'nucleon y: ', VHKK(2,K1+1)
-        WRITE(*,*) 'nucleon z: ', VHKK(3,K1+1)
-        WRITE(*,*) 'K2 nucleon: ', K2+1
-        WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
-        WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
-        WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
         DO L=1,3
           IF( VHKK(L,K1+1).GT.VHKK(L,K2+1) ) THEN
             TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
@@ -5060,15 +5046,6 @@ C            ENDIF
             VHKK(L,K2+1) = VHKK(L,K2+1) - TEMP
           ENDIF
         ENDDO
-        WRITE(*,*) 'After bringing nucleons closer: '
-        WRITE(*,*) 'K1 nucleon: ', K1+1
-        WRITE(*,*) 'nucleon x: ', VHKK(1,K1+1)
-        WRITE(*,*) 'nucleon y: ', VHKK(2,K1+1)
-        WRITE(*,*) 'nucleon z: ', VHKK(3,K1+1)
-        WRITE(*,*) 'K2 nucleon: ', K2+1
-        WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
-        WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
-        WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
       ENDIF
     
       RETURN
