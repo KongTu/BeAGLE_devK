@@ -4986,7 +4986,8 @@ C            ENDIF
           K1 = I
           DO J=1,NMASS
             IF( J .EQ. K1 ) THEN 
-              CONTINUE 
+              CONTINUE
+            ENDIF 
             DIST2 = (VHKK(1,K1+1)-VHKK(1,J+1))**2+(VHKK(2,K1+1)-VHKK(2,J+1))**2+(VHKK(3,K1+1)-VHKK(3,J+1))**2
             IF( DIST2 < C00 .AND. DIST2 > 0E0 ) THEN
               C00 = DIST2
