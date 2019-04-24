@@ -4919,7 +4919,7 @@ C            ENDIF
 * before here. Now, the first step is to randomly pick a nucleon
 * and assign high momentum to it
       
-      CALL DT_PICKSRC(PHKK,VHKK,NMASS,PFER,IFMDIST)
+      CALL DT_PICKSRC(PHKK,VHKK,NMASS,PFER)
       WRITE(*,*) 'TEST'
 
       RETURN
@@ -4933,7 +4933,7 @@ C            ENDIF
 *===picksrc==============================================================*
 *
 
-      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS,PFER,IFMDIST)
+      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS,PFER)
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
