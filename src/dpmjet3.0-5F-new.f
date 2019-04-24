@@ -5003,13 +5003,13 @@ C            ENDIF
         ENDIF
       ENDDO
 
-      DO L=1,3
-        IF( VHKK(L,K1+1) .GT. VHKK(L,K2+1) ) THEN
-          VHKK(L,K1+1) = VHKK(L,K1+1) - SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )/4D0
-          VHKK(L,K2+1) = VHKK(L,K2+1) + SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )/4D0
+      DO IDDX=1,3
+        IF( VHKK(IDDX,K1+1) .GT. VHKK(IDDX,K2+1) ) THEN
+          VHKK(IDDX,K1+1) = VHKK(IDDX,K1+1) - SQRT( (VHKK(IDDX,K1+1)-VHKK(IDDX,K2+1))**2 )/4D0
+          VHKK(IDDX,K2+1) = VHKK(IDDX,K2+1) + SQRT( (VHKK(IDDX,K1+1)-VHKK(IDDX,K2+1))**2 )/4D0
         ELSE
-          VHKK(L,K1+1) = VHKK(L,K1+1) + SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )/4D0
-          VHKK(L,K2+1) = VHKK(L,K2+1) - SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )/4D0
+          VHKK(IDDX,K1+1) = VHKK(IDDX,K1+1) + SQRT( (VHKK(IDDX,K1+1)-VHKK(IDDX,K2+1))**2 )/4D0
+          VHKK(IDDX,K2+1) = VHKK(IDDX,K2+1) - SQRT( (VHKK(IDDX,K1+1)-VHKK(IDDX,K2+1))**2 )/4D0
         ENDIF
       ENDDO
 
