@@ -4938,7 +4938,7 @@ C            ENDIF
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      DOUBLE PRECISION A00, B00, C00, P00 
+      DOUBLE PRECISION A00, B00, C00, D00, P00 
       INTEGER K1, K2
 
       PARAMETER (PI=3.14159265359D+00)
@@ -4948,9 +4948,7 @@ C            ENDIF
       INCLUDE 'beagle.inc'
       
 * for now only A > 12 assign SRC pairs and bring them closer
-
       IF( (NMASS .GE. 12) .AND. (IFMDIST .GE. 1) ) THEN
-        
         A00 = DT_RNDM(A00)
         B00 = 1D0/NMASS
         C00 = 999D0
@@ -4963,18 +4961,29 @@ C            ENDIF
             WRITE(*,*) 'nucleon Energy: ', PHKK(4,I+1)
             WRITE(*,*) 'nucleon Mass: ', PHKK(5,I+1)
 
-            CALL DT_KFERMI(P00,2)
-            P00=P00*PFER
+* now hard-coded 20% SRC probability
+            D00 = DT_RNDM(D00)
+            IF( D00 .LE. 0.2D0 ) THEN
+              WRITE(*,*) 'This is in SRC pair!'
+              CALL DT_KFERMI(P00,2)
+              P00=P00*PFER
 
-            CALL DT_DPOLI(POLC,POLS)
-            CALL DT_DSFECF(SFE,CFE)
-            CXTA = POLS*CFE
-            CYTA = POLS*SFE
-            CZTA = POLC
-            PHKK(4,I+1)   = SQRT(P00*P00+PHKK(5,I+1)**2)
-            PHKK(1,I+1)  = CXTA*P00
-            PHKK(2,I+1)  = CYTA*P00
-            PHKK(3,I+1)  = CZTA*P00
+              CALL DT_DPOLI(POLC,POLS)
+              CALL DT_DSFECF(SFE,CFE)
+              CXTA = POLS*CFE
+              CYTA = POLS*SFE
+              CZTA = POLC
+              PHKK(4,I+1)  = SQRT(P00*P00+PHKK(5,I+1)**2)
+              PHKK(1,I+1)  = CXTA*P00
+              PHKK(2,I+1)  = CYTA*P00
+              PHKK(3,I+1)  = CZTA*P00
+            ELSE
+              WRITE(*,*) 'Not in SRC pair!'
+              PHKK(4,I+1)  = PHKK(4,I+1)
+              PHKK(1,I+1)  = PHKK(1,I+1)
+              PHKK(2,I+1)  = PHKK(2,I+1)
+              PHKK(3,I+1)  = PHKK(3,I+1)
+            ENDIF  
 
             WRITE(*,*) 'After SRC modification: '
             WRITE(*,*) 'nucleon px: ', PHKK(1,I+1)
@@ -5026,22 +5035,18 @@ C            ENDIF
       ENDIF  
 
 * for Deuteron only, if IFMDIST .GE. 1, bring them closer 
-      K1 = 1
-      K2 = 2
-        
-      WRITE(*,*) 'Before bringing nucleons closer: '
-      WRITE(*,*) 'K1 nucleon: ', K1+1
-      WRITE(*,*) 'nucleon x: ', VHKK(1,K1+1)
-      WRITE(*,*) 'nucleon y: ', VHKK(2,K1+1)
-      WRITE(*,*) 'nucleon z: ', VHKK(3,K1+1)
-      WRITE(*,*) 'K2 nucleon: ', K2+1
-      WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
-      WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
-      WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
-
       IF( (NMASS .EQ. 2) .AND. (IFMDIST .GE. 1) ) THEN
         K1 = 1
         K2 = 2
+        WRITE(*,*) 'Before bringing nucleons closer: '
+        WRITE(*,*) 'K1 nucleon: ', K1+1
+        WRITE(*,*) 'nucleon x: ', VHKK(1,K1+1)
+        WRITE(*,*) 'nucleon y: ', VHKK(2,K1+1)
+        WRITE(*,*) 'nucleon z: ', VHKK(3,K1+1)
+        WRITE(*,*) 'K2 nucleon: ', K2+1
+        WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
+        WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
+        WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
         DO L=1,3
           IF( VHKK(L,K1+1).GT.VHKK(L,K2+1) ) THEN
             TEMP = SQRT( (VHKK(L,K1+1)-VHKK(L,K2+1))**2 )
@@ -5055,19 +5060,17 @@ C            ENDIF
             VHKK(L,K2+1) = VHKK(L,K2+1) - TEMP
           ENDIF
         ENDDO
+        WRITE(*,*) 'After bringing nucleons closer: '
+        WRITE(*,*) 'K1 nucleon: ', K1+1
+        WRITE(*,*) 'nucleon x: ', VHKK(1,K1+1)
+        WRITE(*,*) 'nucleon y: ', VHKK(2,K1+1)
+        WRITE(*,*) 'nucleon z: ', VHKK(3,K1+1)
+        WRITE(*,*) 'K2 nucleon: ', K2+1
+        WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
+        WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
+        WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
       ENDIF
-     
-
-      WRITE(*,*) 'After bringing nucleons closer: '
-      WRITE(*,*) 'K1 nucleon: ', K1+1
-      WRITE(*,*) 'nucleon x: ', VHKK(1,K1+1)
-      WRITE(*,*) 'nucleon y: ', VHKK(2,K1+1)
-      WRITE(*,*) 'nucleon z: ', VHKK(3,K1+1)
-      WRITE(*,*) 'K2 nucleon: ', K2+1
-      WRITE(*,*) 'nucleon x: ', VHKK(1,K2+1)
-      WRITE(*,*) 'nucleon y: ', VHKK(2,K2+1)
-      WRITE(*,*) 'nucleon z: ', VHKK(3,K2+1)
-
+    
       RETURN
       END
 
