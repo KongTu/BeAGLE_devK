@@ -4938,7 +4938,8 @@ C            ENDIF
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      DOUBLE PRECISION A00, B00, C00, P00
+      DOUBLE PRECISION A00, B00, C00, P00, 
+      INTEGER K1, K2
 
       PARAMETER (PI=3.14159265359D+00)
 
@@ -5005,11 +5006,11 @@ C            ENDIF
 
 
       IF( VHKK(1,K1+1) .GT. VHKK(1,K2+1) ) THEN
-        VHKK(1,K1+1) = VHKK(1,K1+1) - SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
-        VHKK(1,K2+1) = VHKK(1,K2+1) + SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
+        VHKK(1,K1+1) = VHKK(1,K1+1) - SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4.0D0
+        VHKK(1,K2+1) = VHKK(1,K2+1) + SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4.0D0
       ELSE
-        VHKK(1,K1+1) = VHKK(1,K1+1) + SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
-        VHKK(1,K2+1) = VHKK(1,K2+1) - SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )
+        VHKK(1,K1+1) = VHKK(1,K1+1) + SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4.0D0
+        VHKK(1,K2+1) = VHKK(1,K2+1) - SQRT( (VHKK(1,K1+1)-VHKK(1,K2+1))**2 )/4.0D0
       ENDIF
      
 
