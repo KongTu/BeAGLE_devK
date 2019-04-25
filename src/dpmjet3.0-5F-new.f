@@ -4940,7 +4940,7 @@ C            ENDIF
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      DOUBLE PRECISION A00, B00, C00, D00, P00 
+      DOUBLE PRECISION A00, B00, C00, D00, P00, MOVE 
       INTEGER K1, K2
 
       PARAMETER (PI=3.14159265359D+00)
@@ -5008,6 +5008,7 @@ C            ENDIF
 * start to bring them together at a distance of ~ 1/n(k) fm
         
         IF( (K1 .GT. 0) .AND. (K2 .GT. 0) ) THEN
+          
           DIST1 = (VHKK(1,K1+1)-VHKK(1,K2+1))**2
           DIST2 = (VHKK(2,K1+1)-VHKK(2,K2+1))**2
           DIST3 = (VHKK(3,K1+1)-VHKK(3,K2+1))**2
@@ -5025,8 +5026,6 @@ C            ENDIF
           WRITE(*,*) 'Starting to move:'
           WRITE(*,*) 'P00 = ', P00
           WRITE(*,*) 'Move = ', MOVE
-
-
 
           VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
           VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
