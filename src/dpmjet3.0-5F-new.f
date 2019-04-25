@@ -5009,11 +5009,7 @@ C            ENDIF
         
         IF( (K1 .GT. 0) .AND. (K2 .GT. 0) ) THEN
           
-          DIST1 = (VHKK(1,K1+1)-VHKK(1,K2+1))**2
-          DIST2 = (VHKK(2,K1+1)-VHKK(2,K2+1))**2
-          DIST3 = (VHKK(3,K1+1)-VHKK(3,K2+1))**2
-          DIST_VALUE = SQRT(DIST1+DIST2+DIST3)
-          
+          DIST_VALUE = SQRT(C00)
           X_SPACE = (VHKK(1,K1+1) - VHKK(1,K2+1))/DIST_VALUE
           Y_SPACE = (VHKK(2,K1+1) - VHKK(2,K2+1))/DIST_VALUE
           Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
@@ -5066,6 +5062,11 @@ C            ENDIF
         P00 = SQRT(PHKK(1,K1+1)**2+PHKK(2,K1+1)**2+PHKK(3,K1+1)**2)
         MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
 
+        WRITE(*,*) 'starting distance ~ ', DIST_VALUE
+        WRITE(*,*) 'Starting to move:'
+        WRITE(*,*) 'P00 = ', P00
+        WRITE(*,*) 'Move = ', MOVE
+
         VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
         VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
         VHKK(3,K1+1) = VHKK(3,K1+1) - MOVE*Z_SPACE
@@ -5073,6 +5074,15 @@ C            ENDIF
         VHKK(1,K2+1) = VHKK(1,K2+1) + MOVE*X_SPACE
         VHKK(2,K2+1) = VHKK(2,K2+1) + MOVE*Y_SPACE
         VHKK(3,K2+1) = VHKK(3,K2+1) + MOVE*Z_SPACE
+
+        DIST1 = (VHKK(1,K1+1)-VHKK(1,K2+1))**2
+        DIST2 = (VHKK(2,K1+1)-VHKK(2,K2+1))**2
+        DIST3 = (VHKK(3,K1+1)-VHKK(3,K2+1))**2
+        DIST_3D = SQRT(DIST1+DIST2+DIST3)
+          
+        WRITE(*,*) 'DONE with moving'
+        WRITE(*,*) 'CHECK new distance ~ ', DIST_3D
+
       ENDIF
     
       RETURN
