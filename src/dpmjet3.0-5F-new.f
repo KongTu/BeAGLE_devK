@@ -5008,12 +5008,21 @@ C            ENDIF
 * start to bring them together at a distance of ~ 1/n(k) fm
         
         IF( (K1 .GT. 0) .AND. (K2 .GT. 0) ) THEN
-          DIST_VALUE = SQRT(C00)
+          DIST1 = (VHKK(1,K1+1)-VHKK(1,K2+1))**2
+          DIST2 = (VHKK(2,K1+1)-VHKK(2,K2+1))**2
+          DIST3 = (VHKK(3,K1+1)-VHKK(3,K2+1))**2
+          DIST_VALUE = SQRT(DIST1+DIST2+DIST3)
+          
           X_SPACE = (VHKK(1,K1+1) - VHKK(1,K2+1))/DIST_VALUE
           Y_SPACE = (VHKK(2,K1+1) - VHKK(2,K2+1))/DIST_VALUE
           Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
 
           MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
+
+          WRITE(*,*) 'starting distance ~ ', DIST_VALUE
+          WRITE(*,*) 'Starting to move:'
+          WRITE(*,*) 'Move = ', MOVE
+
 
           VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
           VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
