@@ -5008,7 +5008,7 @@ C            ENDIF
         Y_SPACE = (VHKK(2,K1+1) - VHKK(2,K2+1))/DIST_VALUE
         Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
 
-        MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
+        MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-12)/2D0
 
         VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
         VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
@@ -5046,7 +5046,7 @@ C            ENDIF
         Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
 
         P00 = SQRT(PHKK(1,K1+1)**2+PHKK(2,K1+1)**2+PHKK(3,K1+1)**2)
-        MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
+        MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-12)/2D0
 
         VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
         VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
