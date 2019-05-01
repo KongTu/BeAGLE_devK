@@ -4933,6 +4933,7 @@ C            ENDIF
 
       DOUBLE PRECISION A00, B00, C00, D00, P00, MOVE 
       INTEGER K1, K2
+      INTEGER IS_PN
 
       PARAMETER (PI=3.14159265359D+00)
 
@@ -4958,17 +4959,34 @@ C            ENDIF
         D00 = DT_RNDM(D00)
         IF( D00 .LE. 0.2D0 ) THEN ! now hard-coded 20% SRC nucleons probability
           
-* find the nearest neighbor and record its index number K2
+* find the nearest neighbor and record its index number K2 with 5 times
+* more probability of finding pn pair than pp/nn pair, using B00 random number. 
 
           K1 = IIMAIN
+          B00 = DT_RNDM(B00)
+          IF( B00 .LE. 0.2D0 ) THEN
+            IS_PN = 0
+          ELSE
+            IS_PN = 1
+          ENDIF  
           DO J=1,NMASS
             IF( J .EQ. K1 ) THEN 
               WRITE(*,*) 'SAME NUCLEON! '
               CONTINUE
             ENDIF
-            DIST1 = (VHKK(1,IIMAIN)-VHKK(1,J))**2
-            DIST2 = (VHKK(2,IIMAIN)-VHKK(2,J))**2
-            DIST3 = (VHKK(3,IIMAIN)-VHKK(3,J))**2
+            IF( (IS_PN .EQ. 1) .AND. (PHKK(5,K1) .EQ. PHKK(5,J)) ) THEN
+              WRITE(*,*) 'Proton and neutron pair is required. Continue looking ~ '
+              CONTINUE
+            ELSE IF( (IS_PN .EQ. 0) .AND. (PHKK(5,K1) .NE. PHKK(5,J)) ) THEN
+              WRITE(*,*) 'Proton/neturon pairs are required. Continue looking ~ '
+              CONTINUE  
+            ELSE
+              WRITE(*,*) 'Correct species pair! Now starting to modify momentum ~ '
+            ENDIF
+
+            DIST1 = (VHKK(1,K1)-VHKK(1,J))**2
+            DIST2 = (VHKK(2,K1)-VHKK(2,J))**2
+            DIST3 = (VHKK(3,K1)-VHKK(3,J))**2
             DIST_3D = DIST1+DIST2+DIST3
             IF( DIST_3D < C00 .AND. DIST_3D > 0D0 ) THEN
               C00 = DIST_3D
@@ -4978,6 +4996,7 @@ C            ENDIF
           ENDDO
 
           WRITE(*,*) 'SRC partner nucleon: ', K2
+          WRITE(*,*) 'SRC partner nucleon distance ~ ', SQRT(C00)
           WRITE(*,*) 'px: ', PHKK(1,K2)
           WRITE(*,*) 'py: ', PHKK(2,K2)
           WRITE(*,*) 'pz: ', PHKK(3,K2)
