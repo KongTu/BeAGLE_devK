@@ -4982,9 +4982,7 @@ C            ENDIF
               WRITE(*,*) 'Proton/neturon pairs are required. Continue looking ~ '
               CONTINUE  
             ENDIF
-            
-            WRITE(*,*) 'Correct species pair! Now starting to modify momentum ~ '
-
+          
             DIST1 = (VHKK(1,K1)-VHKK(1,J))**2
             DIST2 = (VHKK(2,K1)-VHKK(2,J))**2
             DIST3 = (VHKK(3,K1)-VHKK(3,J))**2
