@@ -4954,6 +4954,7 @@ C            ENDIF
       WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
       WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
       IF( (NMASS .GE. 12) .AND. (IFMDIST .GE. 1) ) THEN
+        C00 = 9999.D0
         D00 = DT_RNDM(D00)
         IF( D00 .LE. 0.2D0 ) THEN ! now hard-coded 20% SRC nucleons probability
           
