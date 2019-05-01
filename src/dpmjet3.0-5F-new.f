@@ -4962,11 +4962,12 @@ C            ENDIF
           K1 = IIMAIN
           DO J=1,NMASS
             IF( J .EQ. K1 ) THEN 
+              WRITE(*,*) 'SAME NUCLEON! '
               CONTINUE
             ENDIF
-            DIST1 = (VHKK(1,K1)-VHKK(1,J))**2
-            DIST2 = (VHKK(2,K1)-VHKK(2,J))**2
-            DIST3 = (VHKK(3,K1)-VHKK(3,J))**2
+            DIST1 = (VHKK(1,IIMAIN)-VHKK(1,J))**2
+            DIST2 = (VHKK(2,IIMAIN)-VHKK(2,J))**2
+            DIST3 = (VHKK(3,IIMAIN)-VHKK(3,J))**2
             DIST_3D = DIST1+DIST2+DIST3
             IF( DIST_3D < C00 .AND. DIST_3D > 0D0 ) THEN
               C00 = DIST_3D
