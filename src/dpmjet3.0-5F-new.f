@@ -4971,6 +4971,7 @@ C            ENDIF
             IF( DIST_3D < C00 .AND. DIST_3D > 0D0 ) THEN
               C00 = DIST_3D
               K2 = J
+              WRITE(*,*) 'Selecting nucleon: ', K2
             ENDIF
           ENDDO
 
