@@ -931,7 +931,7 @@ C     Use new nucleon to specify PF
       PZF = PHKK(3,IIMAIN)
       EKF = PHKK(4,IIMAIN)-PHKK(5,IIMAIN)
 
-      WRITE(*,*) 'MAIN NUCLEON PHKK(5,IIMAIN) ~ ', PHKK(5,IIMAIN)
+      WRITE(*,*) 'MAIN NUCLEON PHKK(5,IIMAIN) ~ ', PHKK(5,IIMAIN+1)
 
 C... Note: DPF(mu) = P(mu)_true - P(mu)_naive is a 4-momentum too.   
 C    DPF is the name in the HCMS
