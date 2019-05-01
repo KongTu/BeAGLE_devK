@@ -2326,7 +2326,6 @@ C         WRITE(*,*) '          USER3 = # of "partons"'
          WRITE(*,*) '          USER2 = FERM*P00'
          WRITE(*,*) '          USER3 = P00*PFERMP(0)'
       ENDIF
-      ENDIF
       GOTO 10
 
 *********************************************************************
