@@ -2320,6 +2320,12 @@ C         WRITE(*,*) '          USER3 = # of "partons"'
          WRITE(*,*) '          USER1 = PABS'
          WRITE(*,*) '          USER2 = FERM'
          WRITE(*,*) '          USER3 = PZF'
+      ELSEIF (USERSET.EQ.15) THEN
+         WRITE(*,*) 'USERSET 7 selected. fermi debug'
+         WRITE(*,*) '          USER1 = P00'
+         WRITE(*,*) '          USER2 = FERM*P00'
+         WRITE(*,*) '          USER3 = P00*PFERMP(0)'
+      ENDIF
       ENDIF
       GOTO 10
 
@@ -5009,7 +5015,7 @@ C            ENDIF
           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
           CALL DT_KFERMI(P00,2) !re-sample momentum using deuteron high momentum tail
-          IF (USERSET.EQ.7) THEN
+          IF (USERSET.EQ.15) THEN
                USER1 = P00
                USER2 = P00*FERMOD
                USER3 = P00*PFERMP(0)
