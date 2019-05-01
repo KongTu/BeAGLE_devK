@@ -4926,7 +4926,7 @@ C            ENDIF
 *===picksrc==============================================================*
 *
 
-      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS,IIMAIN)
+      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS,IIMAIN,SRC_PARTNER_INDEX)
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
@@ -4949,6 +4949,10 @@ C            ENDIF
 * for now only A > 12 assign SRC pairs and bring them half way
 * closer without changing the center of mass position.
       
+* Initialize SRC_PARTNER_INDEX = -1
+
+      SRC_PARTNER_INDEX = -1
+
       WRITE(*,*) 'Pythia pick this nucleon: ', IIMAIN
       WRITE(*,*) 'px: ', PHKK(1,IIMAIN)
       WRITE(*,*) 'py: ', PHKK(2,IIMAIN)
@@ -5019,12 +5023,12 @@ C            ENDIF
           PAIR_PX = (PHKK(1,K1)+PHKK(1,K2))/2.0D0 - CXTA*P00
           PAIR_PY = (PHKK(2,K1)+PHKK(2,K2))/2.0D0 - CYTA*P00
           PAIR_PZ = (PHKK(3,K1)+PHKK(3,K2))/2.0D0 - CZTA*P00
-          PAIR_E  = SQRT(MAIN_PX**2+MAIN_PY**2+MAIN_PZ**2+PHKK(5,K1)**2)
+          PAIR_E  = SQRT(PAIR_PX**2+PAIR_PY**2+PAIR_PZ**2+PHKK(5,K2)**2)
 
-          PHKK(4,IIMAIN)  = MAIN_E
-          PHKK(1,IIMAIN)  = MAIN_PX
-          PHKK(2,IIMAIN)  = MAIN_PY
-          PHKK(3,IIMAIN)  = MAIN_PZ
+          PHKK(4,K1)  = MAIN_E
+          PHKK(1,K1)  = MAIN_PX
+          PHKK(2,K1)  = MAIN_PY
+          PHKK(3,K1)  = MAIN_PZ
 
           PHKK(4,K2)  = PAIR_E
           PHKK(1,K2)  = PAIR_PX
@@ -5042,6 +5046,8 @@ C            ENDIF
           WRITE(*,*) 'py: ', PHKK(2,K2)
           WRITE(*,*) 'pz: ', PHKK(3,K2)
           WRITE(*,*) 'mass: ', PHKK(5,K2)
+
+          SRC_PARTNER_INDEX = K2
 
         ELSE
           PHKK(4,IIMAIN)  = PHKK(4,IIMAIN)
