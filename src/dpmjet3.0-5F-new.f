@@ -4954,77 +4954,104 @@ C            ENDIF
       WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
       WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
       IF( (NMASS .GE. 12) .AND. (IFMDIST .GE. 1) ) THEN
-        A00 = DT_RNDM(A00)
-        B00 = 1D0/NMASS
-        C00 = 999D0
-        DO I=1,NMASS
-          !randomly pick one nucleon with equal probability out of A nucleus
-          IF( (A00.GE.((I-1)*B00)) .AND. (A00.LT.(I*B00)) ) THEN 
-            D00 = DT_RNDM(D00)
-            IF( D00 .LE. 0.2D0 ) THEN ! now hard-coded 20% SRC nucleons probability
-              CALL DT_KFERMI(P00,2) !re-sample momentum using deuteron high momentum tail
-              P00=P00*FERMOD
-              WRITE(*,*) 'Fermi momentum P00 ', P00
-              WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
-              CALL DT_DPOLI(POLC,POLS)
-              CALL DT_DSFECF(SFE,CFE)
-              CXTA = POLS*CFE
-              CYTA = POLS*SFE
-              CZTA = POLC
-              PHKK(4,I+1)  = SQRT(P00*P00+PHKK(5,I+1)**2)
-              PHKK(1,I+1)  = CXTA*P00
-              PHKK(2,I+1)  = CYTA*P00
-              PHKK(3,I+1)  = CZTA*P00
-
+        D00 = DT_RNDM(D00)
+        IF( D00 .LE. 0.2D0 ) THEN ! now hard-coded 20% SRC nucleons probability
+          
 * find the nearest neighbor and record its index number K2
 
-              K1 = I
-              DO J=1,NMASS
-                IF( J .EQ. K1 ) THEN 
-                  CONTINUE
-                ENDIF
-                DIST1 = (VHKK(1,K1+1)-VHKK(1,J+1))**2
-                DIST2 = (VHKK(2,K1+1)-VHKK(2,J+1))**2
-                DIST3 = (VHKK(3,K1+1)-VHKK(3,J+1))**2
-                DIST_3D = DIST1+DIST2+DIST3
-                IF( DIST_3D < C00 .AND. DIST_3D > 0D0 ) THEN
-                  C00 = DIST_3D
-                  K2 = J
-                ENDIF
-              ENDDO
+          K1 = IIMAIN
+          DO J=1,NMASS
+            IF( J .EQ. K1 ) THEN 
+              CONTINUE
+            ENDIF
+            DIST1 = (VHKK(1,K1)-VHKK(1,J))**2
+            DIST2 = (VHKK(2,K1)-VHKK(2,J))**2
+            DIST3 = (VHKK(3,K1)-VHKK(3,J))**2
+            DIST_3D = DIST1+DIST2+DIST3
+            IF( DIST_3D < C00 .AND. DIST_3D > 0D0 ) THEN
+              C00 = DIST_3D
+              K2 = J
+            ENDIF
+          ENDDO
 
-            ELSE
-              PHKK(4,I+1)  = PHKK(4,I+1)
-              PHKK(1,I+1)  = PHKK(1,I+1)
-              PHKK(2,I+1)  = PHKK(2,I+1)
-              PHKK(3,I+1)  = PHKK(3,I+1)
+          WRITE(*,*) 'SRC partner nucleon: ', K2
+          WRITE(*,*) 'px: ', PHKK(1,K2)
+          WRITE(*,*) 'py: ', PHKK(2,K2)
+          WRITE(*,*) 'pz: ', PHKK(3,K2)
+          WRITE(*,*) 'mass: ', PHKK(5,K2)
 
-              K1 = -1
-              K2 = -1
-            ENDIF  
+          CALL DT_KFERMI(P00,2) !re-sample momentum using deuteron high momentum tail
+          P00=P00*FERMOD
+          WRITE(*,*) 'Fermi momentum P00 ', P00
+          WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
+          CALL DT_DPOLI(POLC,POLS)
+          CALL DT_DSFECF(SFE,CFE)
+          CXTA = POLS*CFE
+          CYTA = POLS*SFE
+          CZTA = POLC
 
-          ENDIF
-        ENDDO
+          MAIN_PX = (PHKK(1,K1)+PHKK(1,K2))/2.0D0 + CXTA*P00
+          MAIN_PY = (PHKK(2,K1)+PHKK(2,K2))/2.0D0 + CYTA*P00
+          MAIN_PZ = (PHKK(3,K1)+PHKK(3,K2))/2.0D0 + CZTA*P00
+          MAIN_E  = SQRT(MAIN_PX**2+MAIN_PY**2+MAIN_PZ**2+PHKK(5,K1)**2)
+          
+          PAIR_PX = (PHKK(1,K1)+PHKK(1,K2))/2.0D0 - CXTA*P00
+          PAIR_PY = (PHKK(2,K1)+PHKK(2,K2))/2.0D0 - CYTA*P00
+          PAIR_PZ = (PHKK(3,K1)+PHKK(3,K2))/2.0D0 - CZTA*P00
+          PAIR_E  = SQRT(MAIN_PX**2+MAIN_PY**2+MAIN_PZ**2+PHKK(5,K1)**2)
 
+          PHKK(4,IIMAIN)  = MAIN_E
+          PHKK(1,IIMAIN)  = MAIN_PX
+          PHKK(2,IIMAIN)  = MAIN_PY
+          PHKK(3,IIMAIN)  = MAIN_PZ
+
+          PHKK(4,K2)  = PAIR_E
+          PHKK(1,K2)  = PAIR_PX
+          PHKK(2,K2)  = PAIR_PY
+          PHKK(3,K2)  = PAIR_PZ
+
+          WRITE(*,*) 'SRC main nucleon after modification: ', K1
+          WRITE(*,*) 'px: ', PHKK(1,K1)
+          WRITE(*,*) 'py: ', PHKK(2,K1)
+          WRITE(*,*) 'pz: ', PHKK(3,K1)
+          WRITE(*,*) 'mass: ', PHKK(5,K1)
+
+          WRITE(*,*) 'SRC partner nucleon after modification: ', K2
+          WRITE(*,*) 'px: ', PHKK(1,K2)
+          WRITE(*,*) 'py: ', PHKK(2,K2)
+          WRITE(*,*) 'pz: ', PHKK(3,K2)
+          WRITE(*,*) 'mass: ', PHKK(5,K2)
+
+        ELSE
+          PHKK(4,IIMAIN)  = PHKK(4,IIMAIN)
+          PHKK(1,IIMAIN)  = PHKK(1,IIMAIN)
+          PHKK(2,IIMAIN)  = PHKK(2,IIMAIN)
+          PHKK(3,IIMAIN)  = PHKK(3,IIMAIN)
+
+          K1 = -1
+          K2 = -1
+        ENDIF  
+
+         
 * start to bring them together at a distance of ~ 1/n(k) fm
         
         IF( (K1 .GT. 0) .AND. (K2 .GT. 0) ) THEN
           DIST_VALUE = SQRT(C00)
-          X_SPACE = (VHKK(1,K1+1) - VHKK(1,K2+1))/DIST_VALUE
-          Y_SPACE = (VHKK(2,K1+1) - VHKK(2,K2+1))/DIST_VALUE
-          Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
+          X_SPACE = (VHKK(1,K1) - VHKK(1,K2))/DIST_VALUE
+          Y_SPACE = (VHKK(2,K1) - VHKK(2,K2))/DIST_VALUE
+          Z_SPACE = (VHKK(3,K1) - VHKK(3,K2))/DIST_VALUE
 
           MOVE = DIST_VALUE
           MOVE = MOVE - (0.197D0/P00)*1.0D-15
           MOVE = MOVE/2.0D0
 
-          VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
-          VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
-          VHKK(3,K1+1) = VHKK(3,K1+1) - MOVE*Z_SPACE
+          VHKK(1,K1) = VHKK(1,K1) - MOVE*X_SPACE
+          VHKK(2,K1) = VHKK(2,K1) - MOVE*Y_SPACE
+          VHKK(3,K1) = VHKK(3,K1) - MOVE*Z_SPACE
 
-          VHKK(1,K2+1) = VHKK(1,K2+1) + MOVE*X_SPACE
-          VHKK(2,K2+1) = VHKK(2,K2+1) + MOVE*Y_SPACE
-          VHKK(3,K2+1) = VHKK(3,K2+1) + MOVE*Z_SPACE
+          VHKK(1,K2) = VHKK(1,K2) + MOVE*X_SPACE
+          VHKK(2,K2) = VHKK(2,K2) + MOVE*Y_SPACE
+          VHKK(3,K2) = VHKK(3,K2) + MOVE*Z_SPACE
         ENDIF
 
       ENDIF  
