@@ -929,17 +929,19 @@ C      CALL DT_PYOUTEP(4)
 * initialize IIMAINN to be -1 in DT_PICKSRC if not in SRC. 
 * otherwise, it would be the index for the SRC partner
 
-      ! IF( IIMAINN.NE.-1 ) THEN
-      !   ISTHKK(IIMAINN)=-12
-      !   NINTS=NINTS+1
-      !   IINTER(NINTS)=IIMAINN
-      ! ENDIF
+      IF( IIMAINN.NE.-1 ) THEN
+        ISTHKK(IIMAINN)=-12
+        NINTS=NINTS+1
+        IINTER(NINTS)=IIMAINN
+      ENDIF
 
 C     Use new nucleon to specify PF
       PXF = PHKK(1,IIMAIN)
       PYF = PHKK(2,IIMAIN)
       PZF = PHKK(3,IIMAIN)
       EKF = PHKK(4,IIMAIN)-PHKK(5,IIMAIN)
+
+      WRITE(*,*) 'FERMI PXF ~ ', PXF
 
 C... Note: DPF(mu) = P(mu)_true - P(mu)_naive is a 4-momentum too.   
 C    DPF is the name in the HCMS
