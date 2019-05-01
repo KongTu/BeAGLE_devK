@@ -5014,11 +5014,6 @@ C            ENDIF
           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
           CALL DT_KFERMI(P00,IFMDIST) !re-sample momentum using deuteron high momentum tail
-          IF (USERSET.EQ.15) THEN
-               USER1 = P00
-               USER2 = P00*FERMOD
-               USER3 = SQRT(C00)
-          ENDIF
           P00=P00*FERMOD
           WRITE(*,*) 'Fermi momentum P00 ', P00
           WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
@@ -5047,6 +5042,12 @@ C            ENDIF
           PHKK(1,K2)  = PAIR_PX
           PHKK(2,K2)  = PAIR_PY
           PHKK(3,K2)  = PAIR_PZ
+
+          IF (USERSET.EQ.15) THEN
+               USER1 = PHKK(1,K1)
+               USER2 = PHKK(1,K2)
+               USER3 = P00
+          ENDIF
 
           WRITE(*,*) 'SRC main nucleon after modification: ', K1
           WRITE(*,*) 'px: ', PHKK(1,K1)
