@@ -4915,15 +4915,6 @@ C            ENDIF
      &                    PHKK(2,3)**2+PHKK(3,3)**2)
       ENDIF
 
-* nucleon positions/coordinates and their 
-* momentum are sampled before here. Then START picking SRC pairs:
-* 1) randomly pick a nucleon and assign high momentum to it with 20% probability when A > 12
-* 2) find nearest nucleon 
-* 3) calculate their distance and move them closer to each other with
-*    a distance of ~ 1/n(k) fm, so that the center of mass position remains the same
-* 4) for deuteron, only move them closer but without re-sampling momentum. 
-      CALL DT_PICKSRC(PHKK,VHKK,NMASS,PFER)
-
       RETURN
       END
 
@@ -4935,7 +4926,7 @@ C            ENDIF
 *===picksrc==============================================================*
 *
 
-      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS,PFER)
+      SUBROUTINE DT_PICKSRC(PHKK,VHKK,NMASS,IIMAIN)
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
@@ -4948,10 +4939,20 @@ C            ENDIF
       DIMENSION PHKK(5,NMASS), VHKK(3,NMASS)
 
       INCLUDE 'beagle.inc'
+
+      LOGICAL LFERMI
+      COMMON /DTNPOT/ PFERMP(2),PFERMN(2),FERMOD,
+      &               EBINDP(2),EBINDN(2),EPOT(2,210),
+      &               ETACOU(2),ICOUL,LFERMI
       
 * for now only A > 12 assign SRC pairs and bring them half way
 * closer without changing the center of mass position.
-
+      
+      WRITE(*,*) 'Pythia pick this nucleon: ', IIMAIN
+      WRITE(*,*) 'px: ', PHKK(1,IIMAIN)
+      WRITE(*,*) 'py: ', PHKK(2,IIMAIN)
+      WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
+      WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
       IF( (NMASS .GE. 12) .AND. (IFMDIST .GE. 1) ) THEN
         A00 = DT_RNDM(A00)
         B00 = 1D0/NMASS
@@ -4962,7 +4963,7 @@ C            ENDIF
             D00 = DT_RNDM(D00)
             IF( D00 .LE. 0.2D0 ) THEN ! now hard-coded 20% SRC nucleons probability
               CALL DT_KFERMI(P00,2) !re-sample momentum using deuteron high momentum tail
-              P00=P00*PFER
+              P00=P00*FERMOD
               WRITE(*,*) 'Fermi momentum P00 ', P00
               WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
               CALL DT_DPOLI(POLC,POLS)

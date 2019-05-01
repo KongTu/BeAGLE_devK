@@ -20,6 +20,7 @@ C...intialize pythia when using dpmjet
       include "radgen.inc"
       include "phiout.inc"
       include "beagle.inc"
+      include "bea_pyqm.inc"
 
 * properties of interacting particles
       COMMON /DTPRTA/ IT,ITZ,IP,IPZ,IJPROJ,IBPROJ,IJTARG,IBTARG,ITMODE
@@ -57,11 +58,6 @@ C...Parameters and switch for energy loss
       DOUBLE PRECISION QHAT
       INTEGER QSWITCH
       COMMON /QUENCH/ QHAT, QSWITCH
-
-C     MDB 2017-08-09 PYQM control from BeAGLE
-      double precision PQRECF, PYQ_SUPF
-      integer PYQ_IPTF, PYQ_IEG
-      COMMON /PQCTRL/ PQRECF, PYQ_SUPF, PYQ_IPTF, PYQ_IEG
 
 C...output file name definition
       COMMON /OUNAME/ outname
@@ -126,6 +122,9 @@ c ---------------------------------------------------------------------
       CHARACTER*255 ENVDIR
       COMMON /ENVCOM/ ENVDIR
       CHARACTER*255 FILNAM
+
+* Locals
+      INTEGER IFSEED
 
 c---------------------------------------------------------------------
 ! ... force block data modules to be read
@@ -354,7 +353,7 @@ C     lepton is defined in negative z and as beam
       sqrts=sqrt((pbeamE+ebeamE)**2-(pbeamdbl-EPN)**2)
       altpbeam=PPN
       altpbeamE=sqrt(PPN*PPN+PYMASS(2212)**2)
-      altsqrts=sqrt((altpbeamE+ebeamE)**2-(altpbeam-ebeam)**2)
+      altsqrts=sqrt((altpbeamE+ebeamE)**2-(altpbeam-EPN)**2)
       write(*,*) '*********************************************'
       IF(IT.GT.1) THEN
          write(*,*) 'Nucleus: Z, A: ', ITZ, ' ', IT
@@ -364,7 +363,7 @@ C     lepton is defined in negative z and as beam
      &               pbeamN, 'GeV'
          write(*,*) 'Rapidity-matched proton beam momentum: ', 
      &               pbeamP, 'GeV'
-      ELSEIF (ITZ.GT.1) THEN
+      ELSEIF (ITZ.GE.1) THEN
          write(*,*) 'proton beam momentum: ', pbeamdbl, 'GeV'
       ELSE
          write(*,*) 'neutron beam momentum: ', pbeamdbl, 'GeV'
@@ -412,6 +411,9 @@ C     GenNucDens is used even without quenching.
          print*,'      Ptmodel iPtF: ',PYQ_IPTF
          print*,'      EmitGluon iEg:',PYQ_IEG
          print*,'      SupFactor:    ',PYQ_SUPF
+         print*,'      Heavy Quarks: ',PYQ_HQ
+         print*,'      Energy Thres: ',PYQ_IET
+
 c...when quenching is used switch off internal parton shower
          MSTP(61)=0
          MSTP(71)=0
@@ -611,7 +613,6 @@ C...Pythia eA shadowing common block from Mark 2017-06-30
       INTEGER NKNOTS,RDUMMY
 
 C  Local
-c      DOUBLE PRECISION PTSTSM
 
       LOGICAL LFIRST
       INTEGER IREJ
@@ -673,6 +674,9 @@ C      print*,'After PYEVNT: MYNGEN=',MYNGEN
       YY=VINT(309)
       XX = Q2/YY/(VINT(302)-VINT(4)**2-VINT(303)**2)
 
+C TEMPTEMP
+      print*,'In DT_PYEVNTEP. Print event:'
+      CALL PYLIST(2)
       if(IOULEV(4).GE.1 .AND. NEVENT.LE.IOULEV(5)) then
          print*,'in event:', NEVENT
          print*,'Q2 from pythia:',Q2
@@ -818,10 +822,6 @@ C...  Note: VHKK is always in TRF
       PosNuc(2)=VHKK(2,IIMAIN)
       PosNuc(3)=VHKK(3,IIMAIN)
       PosNuc(4)=VHKK(4,IIMAIN)
-      PXF = PHKK(1,IIMAIN)
-      PYF = PHKK(2,IIMAIN)
-      PZF = PHKK(3,IIMAIN)
-      EKF = PHKK(4,IIMAIN)-PHKK(5,IIMAIN)
 C Thickness is twice the integral from 0 to infinity
       THKB = 2.0D0*DCALC(0.0D0)
       IDUM = 0
@@ -907,33 +907,7 @@ C     &      NOBAM(ISWAP), IDBAM(ISWAP), IDCH(ISWAP)
             ITEMP = IDCH(IIMAIN)
             IDCH(IIMAIN)=IDCH(ISWAP)
             IDCH(ISWAP)=ITEMP
-C     Use new nucleon to specify PF
-            PXF = PHKK(1,IIMAIN)
-            PYF = PHKK(2,IIMAIN)
-            PZF = PHKK(3,IIMAIN)
-            EKF = PHKK(4,IIMAIN)-PHKK(5,IIMAIN)
          ENDIF
-C         WRITE(*,*)'AFTER SWAP:'
-C         WRITE(*,*)'Main: ',ISTHKK(IIMAIN),IDHKK(IIMAIN), 
-C     &      PHKK(1,IIMAIN), PHKK(2,IIMAIN), PHKK(3,IIMAIN), 
-C     &      PHKK(4,IIMAIN), PHKK(5,IIMAIN), VHKK(1,IIMAIN), 
-C     &      VHKK(2,IIMAIN), VHKK(3,IIMAIN), IDRES(IIMAIN), 
-C     &      IDXRES(IIMAIN), NOBAM(IIMAIN), IDBAM(IIMAIN), IDCH(IIMAIN)
-C         WRITE(*,*)'Swap: ',ISTHKK(ISWAP),IDHKK(ISWAP), PHKK(1,ISWAP),
-C     &      PHKK(2,ISWAP), PHKK(3,ISWAP), PHKK(4,ISWAP), 
-C     &      PHKK(5,ISWAP), VHKK(1,ISWAP), VHKK(2,ISWAP),
-C     &      VHKK(3,ISWAP), IDRES(ISWAP), IDXRES(ISWAP),
-C     &      NOBAM(ISWAP), IDBAM(ISWAP), IDCH(ISWAP)
-c      ELSE
-C         WRITE(*,*) 'KEEP! nucleon# is: ',IIMAIN,' ID=',
-C     &    IDHKK(IIMAIN),' idNucPY=',idNucPY,' idNucBAM=',idNucBAM
-C         WRITE(*,*)'ISTHKK, , PHKK(1-5), VHKK(1-3), IDRES, IDXRES,' 
-C     &          ,'NOBAM, IDBAM, IDCH'     
-C         WRITE(*,*)'Main: ',ISTHKK(IIMAIN),IDHKK(IIMAIN), 
-C     &      PHKK(1,IIMAIN), PHKK(2,IIMAIN), PHKK(3,IIMAIN), 
-C     &      PHKK(4,IIMAIN), PHKK(5,IIMAIN), VHKK(1,IIMAIN), 
-C     &      VHKK(2,IIMAIN), VHKK(3,IIMAIN), IDRES(IIMAIN), 
-C     &      IDXRES(IIMAIN), NOBAM(IIMAIN), IDBAM(IIMAIN), IDCH(IIMAIN)
       ENDIF
 C     Calculate kinematics of actual eN collision w/o Fermi motion
 CC      MAscl = AZMASS(NINT(INUMOD),NINT(CHANUM))/INUMOD ! Done already
@@ -948,6 +922,14 @@ C     &     ((2.0*ebeamEnucl+PHKK(5,IIMAIN))*PHKK(5,IIMAIN))+masse*masse)
 
 C      WRITE(*,*) 'Output current event after possible swap'
 C      CALL DT_PYOUTEP(4)
+
+      CALL DT_PICKSRC(PHKK,VHKK,NINT(INUMOD),IIMAIN)
+
+C     Use new nucleon to specify PF
+      PXF = PHKK(1,IIMAIN)
+      PYF = PHKK(2,IIMAIN)
+      PZF = PHKK(3,IIMAIN)
+      EKF = PHKK(4,IIMAIN)-PHKK(5,IIMAIN)
 
 C... Note: DPF(mu) = P(mu)_true - P(mu)_naive is a 4-momentum too.   
 C    DPF is the name in the HCMS
@@ -971,10 +953,10 @@ C  ROBO Pythia event into same frame as PHKK (TRF g*=z,e' px>0,py-0)
          write(*,*) "DT_PYEVNTEP: TRF e=-z"
          CALL PYLIST(2)
       endif
-C...Rotate so that the gamma* is along +z            
+C...Rotate so that the gamma* (or Z0) is along +z            
       DO ITRK=1,N
-         IF (K(ITRK,2).EQ.22 .AND. K(ITRK,1).EQ.21 
-     &        .AND. K(ITRK,3).EQ.1) THEN
+         IF ((K(ITRK,2).EQ.22 .OR. K(ITRK,2).EQ.23) 
+     &        .AND. K(ITRK,1).EQ.21 .AND. K(ITRK,3).EQ.1) THEN
             PHIGAM=PYANGL(P(ITRK,1),P(ITRK,2))
             PTGAM=DSQRT(P(ITRK,1)**2+P(ITRK,2)**2)
             THEGAM=PYANGL(P(ITRK,3),PTGAM)
@@ -1054,7 +1036,7 @@ C...Struck "parton" is the (non e') particle with highest pz (along g*)
       IPARTN=0
       DO ITRK=1,N
          IF ( (1.LE.K(ITRK,1) .AND. K(ITRK,1).LE.3) .AND.
-     &        .NOT.(11.LE.K(ITRK,2) .AND. K(ITRK,2).LE.18) ) THEN
+     &       .NOT.(11.LE.ABS(K(ITRK,2)).AND.ABS(K(ITRK,2)).LE.18) ) THEN
             IF (P(ITRK,3).GT.PZMAX) THEN
                PZMAX=P(ITRK,3)
                IPARTN=ITRK
@@ -1105,10 +1087,19 @@ C Decay particles (like a J/psi) from the event skeleton
          WRITE(*,*)"PYLIST: After PYEXEC"
          CALL PYLIST(2)
       endif
+         if(IOULEV(6).GE.1) print*, 'Event ', NEVENT
 c...  do quenching to scattered partons if requested      
       IF (QSWITCH.EQ.1) THEN
          call InterPos          ! Set the interaction position in nucleus
+         if(IOULEV(6).GE.1) then
+            print*, 'before pyqm'
+            call PYLIST(1)
+         endif
          call ApplyQW(QHAT)     ! Compute QW (also fill PYQREQ(mu))
+         if(IOULEV(6).GE.1) then
+            print*,'after pyqm'
+            call PYLIST(1)
+         endif 
 C     2017-08-26 MDB For Userset1, use PYQREC in TRF z along gamma*
          IF (USERSET.EQ.1 .OR. USERSET.EQ.2) THEN
             USER3 = PYQREC(4)
@@ -1187,8 +1178,8 @@ c...find the virtual photon to do LT from lab to gamma c.m.s
          PHEP(3,J)=-PHEP(3,J)
 c... Mark 2016-09-14 Flip px also to make it a rotation
          PHEP(1,J)=-PHEP(1,J)  
-         IF((IDHEP(J).EQ.22).AND.(ISTHEP(J).EQ.3).AND.
-     &        (JMOHEP(1,J).EQ.1)) THEN
+         IF((IDHEP(J).EQ.22 .OR. IDHEP(J).EQ.23) .AND.
+     &        (ISTHEP(J).EQ.3).AND. (JMOHEP(1,J).EQ.1)) THEN
             GAMM(1)=PHEP(1,J)
             GAMM(2)=PHEP(2,J)
             GAMM(3)=PHEP(3,J)
@@ -1319,10 +1310,10 @@ c... Set VHKK for recoiling nucleons.
 
 c...set BAM ID for the particles         
          IDBAM(I)=IDT_ICIHAD(IDHKK(I))
-c...change the IS of out e- from 1 to 99 in order to avoid its 
-c...interaction in cascade
-         IF( (ISTHEP(J).EQ.1).AND.(IDHEP(J).EQ.11).AND.
-     & (JMOHEP(1,J).EQ.3) ) THEN
+c...change the IS of scattered lepton from 1 to 99 in order to avoid its 
+c...interaction in cascade. 
+         IF( (ISTHEP(J).EQ.1).AND.(JMOHEP(1,J).EQ.3).AND.
+     &        (ABS(IDHEP(J)).EQ.11.OR.ABS(IDHEP(J)).EQ.13) ) THEN
             ISTHKK(I)=99
             JMOHKK(1,I)=JMOHEP(1,J)
          ENDIF
@@ -1441,7 +1432,7 @@ C
       SUBROUTINE DT_PYOUTEP(MODE)     
  
 *     input:
-*           MODE: 1:reject statistics
+*           MODE: 1:reject statistics - not really used
 *                 2:event output
 *                 3:total statistics print
 *                 4:event output to screen (for debugging) Mark 08/17/2016
@@ -1610,8 +1601,8 @@ c     PHKK(3,J)=pgamma*(P3+pbeta*P4)
 c     PHKK(4,J)=pgamma*(P4+pbeta*P3)
 c...find the exchanged boson and out e- to make it fit root tree making rules
 c...in the following steps
-            IF((ISTHKK(J).EQ.3).AND.(IDHKK(J).EQ.22).AND.
-     &           (JMOHKK(1,J).EQ.(NPOINT(1)+1))) THEN
+            IF((ISTHKK(J).EQ.3).AND.(IDHKK(J).EQ.22 .OR. IDHKK(J).EQ.23)
+     &           .AND. (JMOHKK(1,J).EQ.(NPOINT(1)+1))) THEN
                IBOSON=J
             ELSEIF(ISTHKK(J).EQ.99) THEN
                ISTHKK(J)=1
@@ -1776,11 +1767,6 @@ C      <Q_T> assumes all ID=80000 are absorbed in target
          USER2 = YYSPLAT
       ELSEIF (USERSET.EQ.5) THEN         
          USER2 = SIGEFF
-      ELSEIF (USERSET.LT.0.AND.USERSET.GT.6) THEN
-         WRITE(*,*)'WARNING: Unknown USERSET:',USERSET,'USER1,2,3=0'
-         USER1=0.0D0
-         USER2=0.0D0
-         USER3=0.0D0
       ENDIF
 
       IF (NCOLLT.NE.NTW0)
@@ -1831,8 +1817,10 @@ C     &     I12,1x,$,2(f12.6,1x,$),7(f18.11,3x,$),11(f19.9,3x,$),I12,/)
 
 ***************standard output for particle info************************
 c...add 2 beam information at first to fit into root tree making rule      
+c... MDB Change these lines to use the correct pid for lepton+nucleon!
       I=NPOINT(1)+1   
-      write(29,34) 1,21,11,0,0,I+4,0,
+C      write(29,34) 1,21,11,0,0,I+4,0,
+      write(29,34) 1,21,IDHKK(I),0,0,I+4,0,
      &     PHKK(1,I),PHKK(2,I),PHKK(3,I),PHKK(4,I),PHKK(5,I),
      &     VHKK(1,I),VHKK(2,I),VHKK(3,I)
      &     ,0,0,0
@@ -1856,18 +1844,23 @@ c         ENDIF
          ZOUT = 0
       ELSE 
          AOUT = 1
-         ZOUT = 1
+C         ZOUT = 1 
+         ZOUT = PYCHGE(IDHKK(I+1))/3
       ENDIF
-      write(29,34) 2,21,2212,0,0,I+5,0,PP1,PP2,P3,P4,PP5,
+C      write(29,34) 2,21,2212,0,0,I+5,0,PP1,PP2,P3,P4,PP5,
+      write(29,34) 2,21,IDHKK(I+1),0,0,I+5,0,PP1,PP2,P3,P4,PP5,
      &        VHKK(1,I+1),VHKK(2,I+1),VHKK(3,I+1),AOUT,ZOUT,0
-c...add the exchanged boson from the 
-      write(29,34) 3,21,11,0,1,ILEPT+4,0,
+c...add the lepton 
+C      write(29,34) 3,21,11,0,1,ILEPT+4,0,
+      write(29,34) 3,21,IDHKK(ILEPT),0,1,ILEPT+4,0,
      &     PHKK(1,ILEPT),PHKK(2,ILEPT),PHKK(3,ILEPT),
      &     PHKK(4,ILEPT),PHKK(5,ILEPT),VHKK(1,ILEPT),
      &     VHKK(2,ILEPT),VHKK(3,ILEPT)
      &     ,0,0,0
-c...add the exchanged boson from the 
-      write(29,34) 4,21,22,0,1,IBOSON+4,0,
+c...add the exchanged boson  
+C      IDEXBO = 22
+C      IF (MCGENE.EQ.6) IDEXBO = 23
+      write(29,34) 4,21,IDHKK(IBOSON),0,1,IBOSON+4,0,
      &     PHKK(1,IBOSON),PHKK(2,IBOSON),PHKK(3,IBOSON),
      &     PHKK(4,IBOSON),PHKK(5,IBOSON),VHKK(1,IBOSON),
      &     VHKK(2,IBOSON),VHKK(3,IBOSON)
