@@ -5008,7 +5008,7 @@ C            ENDIF
           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
           CALL DT_KFERMI(P00,2) !re-sample momentum using deuteron high momentum tail
-          P00=P00*FERMOD
+          ! P00=P00*FERMOD
           WRITE(*,*) 'Fermi momentum P00 ', P00
           WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
           CALL DT_DPOLI(POLC,POLS)
