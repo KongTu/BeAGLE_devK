@@ -617,7 +617,7 @@ C  Local
       LOGICAL LFIRST
       INTEGER IREJ
 
-      INTEGER SRC_PARTNER_INDEX
+      INTEGER IIMAINN
 
       SAVE LFIRST
 
@@ -925,13 +925,13 @@ C     &     ((2.0*ebeamEnucl+PHKK(5,IIMAIN))*PHKK(5,IIMAIN))+masse*masse)
 C      WRITE(*,*) 'Output current event after possible swap'
 C      CALL DT_PYOUTEP(4)
 
-      CALL DT_PICKSRC(PHKK,VHKK,NINT(INUMOD),IIMAIN,SRC_PARTNER_INDEX)
+      CALL DT_PICKSRC(PHKK,VHKK,NINT(INUMOD),IIMAIN,IIMAINN)
 
-      IF( SRC_PARTNER_INDEX.NE.-1 ) THEN
-        ISTHKK(SRC_PARTNER_INDEX)=-12
+      IF( IIMAINN.NE.-1 ) THEN
+        ISTHKK(IIMAINN)=-12
         NINTS=NINTS+1
-        IINTER(NINTS)=SRC_PARTNER_INDEX
-        WRITE(*,*) 'SRC_PARTNER_INDEX = ', SRC_PARTNER_INDEX
+        IINTER(NINTS)=IIMAINN
+        WRITE(*,*) 'IIMAINN = ', IIMAINN
       ENDIF
 
 C     Use new nucleon to specify PF

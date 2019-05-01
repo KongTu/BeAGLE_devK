@@ -5050,6 +5050,7 @@ C            ENDIF
           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
           SRC_PARTNER_INDEX = K2
+          WRITE(*,*) 'DT_PICKSRC SRC_PARTNER_INDEX: ', SRC_PARTNER_INDEX
 
         ELSE
           PHKK(4,IIMAIN)  = PHKK(4,IIMAIN)
