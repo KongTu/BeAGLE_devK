@@ -926,12 +926,13 @@ C      WRITE(*,*) 'Output current event after possible swap'
 C      CALL DT_PYOUTEP(4)
 
       CALL DT_PICKSRC(PHKK,VHKK,NINT(INUMOD),IIMAIN,IIMAINN)
+* initialize IIMAINN to be -1 in DT_PICKSRC if not in SRC. 
+* otherwise, it would be the index for the SRC partner
 
       IF( IIMAINN.NE.-1 ) THEN
         ISTHKK(IIMAINN)=-12
         NINTS=NINTS+1
         IINTER(NINTS)=IIMAINN
-        WRITE(*,*) 'IIMAINN = ', IIMAINN
       ENDIF
 
 C     Use new nucleon to specify PF
@@ -939,11 +940,6 @@ C     Use new nucleon to specify PF
       PYF = PHKK(2,IIMAIN)
       PZF = PHKK(3,IIMAIN)
       EKF = PHKK(4,IIMAIN)-PHKK(5,IIMAIN)
-
-      WRITE(*,*) 'MAIN NUCLEON PHKK(1,IIMAIN) ~ ', PHKK(1,IIMAIN)
-      WRITE(*,*) 'MAIN NUCLEON PHKK(2,IIMAIN) ~ ', PHKK(2,IIMAIN)
-      WRITE(*,*) 'MAIN NUCLEON PHKK(3,IIMAIN) ~ ', PHKK(3,IIMAIN)
-      WRITE(*,*) 'MAIN NUCLEON PHKK(5,IIMAIN) ~ ', PHKK(5,IIMAIN)
 
 C... Note: DPF(mu) = P(mu)_true - P(mu)_naive is a 4-momentum too.   
 C    DPF is the name in the HCMS

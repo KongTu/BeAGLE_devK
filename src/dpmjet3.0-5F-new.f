@@ -4966,6 +4966,7 @@ C            ENDIF
       WRITE(*,*) 'py: ', PHKK(2,IIMAIN)
       WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
       WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
+
       IF( (NMASS .GE. 12) .AND. (IFMDIST .GE. 1) ) THEN
         C00 = 9999.0D0
         D00 = DT_RNDM(D00)
@@ -5002,7 +5003,6 @@ C            ENDIF
             IF( DIST_3D < C00 .AND. DIST_3D > 0D0 ) THEN
               C00 = DIST_3D
               K2 = J
-              WRITE(*,*) 'Selecting nucleon: ', K2
             ENDIF
           ENDDO
 
@@ -5017,7 +5017,7 @@ C            ENDIF
           IF (USERSET.EQ.15) THEN
                USER1 = P00
                USER2 = P00*FERMOD
-               USER3 = P00*PFERMP(1)
+               USER3 = SQRT(C00)
           ENDIF
           P00=P00*FERMOD
           WRITE(*,*) 'Fermi momentum P00 ', P00
@@ -5061,8 +5061,6 @@ C            ENDIF
           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
           SRC_PARTNER_INDEX = int(K2)
-
-          
 
         ELSE
           PHKK(4,IIMAIN)  = PHKK(4,IIMAIN)
