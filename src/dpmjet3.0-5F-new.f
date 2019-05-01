@@ -5009,7 +5009,12 @@ C            ENDIF
           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
           CALL DT_KFERMI(P00,2) !re-sample momentum using deuteron high momentum tail
-          ! P00=P00*FERMOD
+          IF (USERSET.EQ.7) THEN
+               USER1 = P00
+               USER2 = P00*FERMOD
+               USER3 = P00*PFERMP(0)
+          ENDIF
+          P00=P00*FERMOD
           WRITE(*,*) 'Fermi momentum P00 ', P00
           WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
           CALL DT_DPOLI(POLC,POLS)
@@ -5051,7 +5056,8 @@ C            ENDIF
           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
           SRC_PARTNER_INDEX = int(K2)
-          WRITE(*,*) 'DT_PICKSRC SRC_PARTNER_INDEX: ', SRC_PARTNER_INDEX
+
+          
 
         ELSE
           PHKK(4,IIMAIN)  = PHKK(4,IIMAIN)
