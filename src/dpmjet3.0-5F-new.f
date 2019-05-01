@@ -5033,15 +5033,15 @@ C            ENDIF
           PAIR_PZ = (PHKK(3,K1)+PHKK(3,K2))/2.0D0 - CZTA*P00
           PAIR_E  = SQRT(PAIR_PX**2+PAIR_PY**2+PAIR_PZ**2+PHKK(5,K2)**2)
 
-          PHKK(4,K1)  = MAIN_E
-          PHKK(1,K1)  = MAIN_PX
-          PHKK(2,K1)  = MAIN_PY
-          PHKK(3,K1)  = MAIN_PZ
+          PHKK(4,K1) = MAIN_E
+          PHKK(1,K1) = MAIN_PX
+          PHKK(2,K1) = MAIN_PY
+          PHKK(3,K1) = MAIN_PZ
 
-          PHKK(4,K2)  = PAIR_E
-          PHKK(1,K2)  = PAIR_PX
-          PHKK(2,K2)  = PAIR_PY
-          PHKK(3,K2)  = PAIR_PZ
+          PHKK(4,K2) = PAIR_E
+          PHKK(1,K2) = PAIR_PX
+          PHKK(2,K2) = PAIR_PY
+          PHKK(3,K2) = PAIR_PZ
 
           IF (USERSET.EQ.15) THEN
                USER1 = PHKK(1,K1)
