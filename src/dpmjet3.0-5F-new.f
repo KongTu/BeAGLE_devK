@@ -5013,11 +5013,11 @@ C            ENDIF
           WRITE(*,*) 'pz: ', PHKK(3,K2)
           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
-          CALL DT_KFERMI(P00,2) !re-sample momentum using deuteron high momentum tail
+          CALL DT_KFERMI(P00,1) !re-sample momentum using deuteron high momentum tail
           IF (USERSET.EQ.15) THEN
                USER1 = P00
                USER2 = P00*FERMOD
-               USER3 = P00*PFERMP(0)
+               USER3 = P00*PFERMP(1)
           ENDIF
           P00=P00*FERMOD
           WRITE(*,*) 'Fermi momentum P00 ', P00
