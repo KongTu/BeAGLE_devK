@@ -4942,8 +4942,8 @@ C            ENDIF
 
       LOGICAL LFERMI
       COMMON /DTNPOT/ PFERMP(2),PFERMN(2),FERMOD,
-      &               EBINDP(2),EBINDN(2),EPOT(2,210),
-      &               ETACOU(2),ICOUL,LFERMI
+     &                EBINDP(2),EBINDN(2),EPOT(2,210),
+     &                ETACOU(2),ICOUL,LFERMI      
       
 * for now only A > 12 assign SRC pairs and bring them half way
 * closer without changing the center of mass position.
