@@ -4977,12 +4977,12 @@ C            ENDIF
             IF( (IS_PN .EQ. 1) .AND. (PHKK(5,K1) .EQ. PHKK(5,J)) ) THEN
               WRITE(*,*) 'Proton and neutron pair is required. Continue looking ~ '
               CONTINUE
-            IF( (IS_PN .EQ. 0) .AND. (PHKK(5,K1) .NE. PHKK(5,J)) ) THEN
+            ELSE IF( (IS_PN .EQ. 0) .AND. (PHKK(5,K1) .NE. PHKK(5,J)) ) THEN
               WRITE(*,*) 'Proton/neturon pairs are required. Continue looking ~ '
               CONTINUE  
-            ELSE
-              WRITE(*,*) 'Correct species pair! Now starting to modify momentum ~ '
             ENDIF
+            
+            WRITE(*,*) 'Correct species pair! Now starting to modify momentum ~ '
 
             DIST1 = (VHKK(1,K1)-VHKK(1,J))**2
             DIST2 = (VHKK(2,K1)-VHKK(2,J))**2
