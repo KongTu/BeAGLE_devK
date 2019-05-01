@@ -4975,7 +4975,7 @@ C            ENDIF
               CONTINUE
             ENDIF
             IF((IS_PN.EQ.1).AND.(PHKK(5,K1).EQ.PHKK(5,J))) THEN
-              ! WRITE(*,*) 'Proton and neutron pair is required. Continue looking ~ '
+              WRITE(*,*) 'Proton and neutron pair is required. Continue looking'
               CONTINUE
             ENDIF
             IF((IS_PN.EQ.0).AND.(PHKK(5,K1).NE.PHKK(5,J))) THEN
