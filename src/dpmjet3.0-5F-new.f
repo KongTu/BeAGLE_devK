@@ -2716,6 +2716,7 @@ C     &                LEMCCK,LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT
 
 * initialize treatment for residual nuclei
       CALL DT_RESNCL(EPN,NLOOP,1)
+      WRITE(*,*) 'NLOOP 1st ~ ', NLOOP
 
 * sample hadron/nucleus-nucleus interaction
       CALL DT_KKEVNT(KKMAT,IREJ1)
@@ -2750,6 +2751,7 @@ C         CALL DT_PYOUTEP(4)
   101    CONTINUE
 * treatment of residual nuclei
          CALL DT_RESNCL(EPN,NLOOP,2)
+         WRITE(*,*) 'NLOOP 2nd ~ ', NLOOP
 
          if(IOULEV(4).GE.1 .AND. NEVHKK.LE.IOULEV(5)) then
             WRITE(*,*) 'Before DT_FICONF:'
@@ -2759,6 +2761,7 @@ C         CALL DT_PYOUTEP(4)
 * evaporation / fission / fragmentation
 * (if intranuclear cascade was sampled only)
          IF (LFZC) THEN
+            WRITE(*,*) 'NLOOP BEFORE DT_FICONF ~ ', NLOOP
             CALL DT_FICONF(IJPROJ,IP,IPZ,IT,ITZ,NLOOP,IREJ1)
             !pythia model produces the event out this subroutine
             !if failed jump out directly, added by liang
@@ -12972,8 +12975,8 @@ C           AMRCL0(I) = AIF(I)*AMUAMU+1.0D-3*ENERGY(AIF(I),AIZF(I))
                AMRCL(I) = ZERO
                EEXC(I)  = ZERO
                IF (NLOOP.LE.500) THEN
-                  GOTO 9998
                   WRITE(*,*) 'REJECTION FLAG ~2nd GOTO 9998 ~ ', IREJ
+                  GOTO 9998
                ELSE
                   IREXCI(2) = IREXCI(2)+1
                   WRITE(*,*) 'REJECTION FLAG ~3rd GOTO 9999 ~ ', IREJ
