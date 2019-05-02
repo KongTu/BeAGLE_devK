@@ -3579,7 +3579,6 @@ C           CLOSE(LDAT)
 c...skip the Q2, y sampling. Use Pythia/Rapgap
          IF (MCGENE.EQ.5) THEN
             CALL DT_PYEVNTEP(Q2,YY,1,IDUM)
-            WRITE(*,*) 'REJECTION FLAG AFTER ~ ', IDUM
          ELSEIF (MCGENE.EQ.6) THEN
             CALL DT_RGEVNTEP(Q2,YY,1,IDUM)
             IF (OLDOUT) THEN
@@ -5016,7 +5015,7 @@ C            ENDIF
           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
           CALL DT_KFERMI(P00,IFMDIST) !re-sample momentum using deuteron high momentum tail
-          P00=0.1D0
+          P00=P00*FERMOD
           WRITE(*,*) 'Fermi momentum P00 ', P00
           WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
           CALL DT_DPOLI(POLC,POLS)
@@ -12842,6 +12841,7 @@ C    &                   ' containing meson ',I4,', status set to 1')
 * reject elastic events (def: one final state particle = projectile)
       IF ((IP.EQ.1).AND.(NFSP.EQ.1).AND.(IDFSP.EQ.IJPROJ)) THEN
          IREXCI(3) = IREXCI(3)+1
+         WRITE(*,*) 'REJECTION FLAG ~1st GOTO 9999 ~ ', IREJ
          GOTO 9999
 C        RETURN
       ENDIF
@@ -12900,9 +12900,11 @@ C           AMRCL0(I) = AIF(I)*AMUAMU+1.0D-3*ENERGY(AIF(I),AIZF(I))
                AMRCL(I) = ZERO
                EEXC(I)  = ZERO
                IF (NLOOP.LE.500) THEN
+                  WRITE(*,*) 'REJECTION FLAG ~1st GOTO 9998 ~ ', IREJ
                   GOTO 9998
                ELSE
                   IREXCI(2) = IREXCI(2)+1
+                  WRITE(*,*) 'REJECTION FLAG ~2nd GOTO 9999 ~ ', IREJ
                   GOTO 9999
                ENDIF
 *
@@ -12971,8 +12973,10 @@ C           AMRCL0(I) = AIF(I)*AMUAMU+1.0D-3*ENERGY(AIF(I),AIZF(I))
                EEXC(I)  = ZERO
                IF (NLOOP.LE.500) THEN
                   GOTO 9998
+                  WRITE(*,*) 'REJECTION FLAG ~2nd GOTO 9998 ~ ', IREJ
                ELSE
                   IREXCI(2) = IREXCI(2)+1
+                  WRITE(*,*) 'REJECTION FLAG ~3rd GOTO 9999 ~ ', IREJ
                   GOTO 9999
                ENDIF
 *
@@ -13052,6 +13056,9 @@ C                     REDORI = ONE / ( FRMRDC )**(2.D+00/3.D+00)
          ELSEIF (NTOT(I).EQ.1) THEN
             WRITE(LOUT,1003) I
  1003       FORMAT(1X,'FICONF:   warning! NTOT(I)=1? (I=',I3,')')
+
+            WRITE(*,*) 'REJECTION FLAG ~4th GOTO 9999 ~ ', IREJ
+            
             GOTO 9999
          ELSE
             AMRCL0(I) = ZERO
@@ -13077,6 +13084,7 @@ C                     REDORI = ONE / ( FRMRDC )**(2.D+00/3.D+00)
             CALL DT_MASHEL(P1IN,P2IN,XM1,XM2,P1OUT,P2OUT,IREJ1)
             IF (IREJ1.GT.0) THEN
                WRITE(LOUT,*) 'ficonf-mashel rejection'
+               WRITE(*,*) 'REJECTION FLAG ~5th GOTO 9999 ~ ', IREJ
                GOTO 9999
             ENDIF
             DO 10 K=1,4
@@ -13098,6 +13106,7 @@ C                     REDORI = ONE / ( FRMRDC )**(2.D+00/3.D+00)
      &             ',  nucleon config. 1:',2I4,' 2:',2I4,
      &             2(/,11X,3E12.3))
             IF (NLOOP.LE.500) THEN
+               WRITE(*,*) 'REJECTION FLAG ~3rd GOTO 9998 ~ ', IREJ
                GOTO 9998
             ELSE
                IREXCI(1) = IREXCI(1)+1
