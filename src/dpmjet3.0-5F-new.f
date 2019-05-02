@@ -3578,6 +3578,7 @@ C           CLOSE(LDAT)
 c...skip the Q2, y sampling. Use Pythia/Rapgap
          IF (MCGENE.EQ.5) THEN
             CALL DT_PYEVNTEP(Q2,YY,1,IDUM)
+            WRITE(*,*) 'REJECTION FLAG ~ ', IDUM
          ELSEIF (MCGENE.EQ.6) THEN
             CALL DT_RGEVNTEP(Q2,YY,1,IDUM)
             IF (OLDOUT) THEN
