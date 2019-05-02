@@ -943,6 +943,8 @@ C     Use new nucleon to specify PF
 
       WRITE(*,*) 'FERMI PXF ~ ', PXF
 
+      WRITE(*,*) 'REJECTION FLAG 1 ~ ', IREJ
+
 C... Note: DPF(mu) = P(mu)_true - P(mu)_naive is a 4-momentum too.   
 C    DPF is the name in the HCMS
 C    PXF,PYF,PZF,EKF in the TRF
@@ -1431,6 +1433,8 @@ C
       endif
 
       LFIRST=.TRUE.
+
+      WRITE(*,*) 'REJECTION FLAG 2 ~ ', IREJ
       RETURN
 
 9999  CONTINUE
