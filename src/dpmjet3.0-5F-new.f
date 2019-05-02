@@ -2690,9 +2690,6 @@ C     &                LEMCCK,LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT
       ENDIF
       ILOOP = ILOOP+1
 
-      WRITE(*,*) 'REJECTION FLAG 1 ~ ', IREJ
-
-
 * variable energy-runs, recalculate parameters for LT's
       IF ((ABS(VAREHI).GT.ZERO).OR.(IOGLB.EQ.100)) THEN
          PDUM = ZERO
@@ -2727,9 +2724,6 @@ C     &                LEMCCK,LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT
          GOTO 9999
       ENDIF
 
-      WRITE(*,*) 'REJECTION FLAG 2 ~ ', IREJ1
-
-
       IF ((NPMASS.GT.1).OR.(NTMASS.GT.1)) THEN
 
 C-TEMP-TEMP-TEMP
@@ -2753,8 +2747,6 @@ C         CALL DT_PYOUTEP(4)
 * excited nucleons (ISTHKK=15,16)
          CALL DT_SCN4BA
 
-         WRITE(*,*) 'REJECTION FLAG 3 ~ ', IREJ1
-
   101    CONTINUE
 * treatment of residual nuclei
          CALL DT_RESNCL(EPN,NLOOP,2)
@@ -2771,7 +2763,6 @@ C         CALL DT_PYOUTEP(4)
             !pythia model produces the event out this subroutine
             !if failed jump out directly, added by liang
 
-            WRITE(*,*) 'REJECTION FLAG 4 ~ ', IREJ1
             IF ((MCGENE.EQ.5 .OR. MCGENE.EQ.6).AND.(IREJ1.GE.1)) THEN
                WRITE(*,*) 'KKINC: Event',NEVHKK,'rejected in DT_FICONF.'
                GOTO 9999         
@@ -2826,7 +2817,6 @@ c         CALL DT_PYOUTEP(4)
       RETURN
  9999 CONTINUE
       IREJ = 1
-      WRITE(*,*) 'REJECTION FLAG 5 ~ ', IREJ1
       RETURN
       END
 
@@ -13236,10 +13226,13 @@ C     ENDIF
 
 C9998 IREXCI(1) = IREXCI(1)+1
  9998 IREJ   = IREJ+1
+      WRITE(*,*) 'REJECTION FLAG 1 ~ ', IREJ
+
  9999 CONTINUE
       LRCLPR = .TRUE.
       LRCLTA = .TRUE.
       IREJ   = IREJ+1
+      WRITE(*,*) 'REJECTION FLAG 2 ~ ', IREJ
       RETURN
       END
 
