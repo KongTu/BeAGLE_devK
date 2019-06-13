@@ -17643,6 +17643,29 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       X0   = 0.0D0
       CDF = 0.0D0
 
+!Random number generation between 0 and 1     
+      C = DT_RNDM(GGPART)
+!Random number generation between 0.999 and 1, to select higher k momentum tail
+      D = 0.999D0 + (1.0D0-0.999D0)*DT_RNDM(GGPART)  
+!Different n(k) distribution. Option 1 and 11 is the same. 
+      E = C
+      IF( KRANGE .EQ. 1 ) THEN
+        E = C
+        B2 = 0.220D0
+      ELSE IF( KRANGE .EQ. 2 ) THEN
+        E = D
+        B2 = 0.220D0
+      IF( KRANGE .EQ. 11 ) THEN
+        E = C
+        B2 = 0.220D0
+      ELSE IF( KRANGE .EQ. 12 ) THEN
+        E = C
+        B2 = 0.40D0
+      ELSE IF( KRANGE .EQ. 13 ) THEN
+        E = C
+        B2 = 0.10D0
+      ENDIF
+
 !First, calculate the normalization:
 
       DO 10 I = 1,10000
@@ -17661,15 +17684,6 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       CDFN = CDF
       X0 = 0.000D0
       CDF = 0.000D0
-
-!Random number generation between 0 and 1     
-      C = DT_RNDM(GGPART)
-!Random number generation between 0.999 and 1, to select higher k momentum tail
-      D = 0.999D0 + (1.0D0-0.999D0)*DT_RNDM(GGPART)  
-
-      E = C
-      IF( KRANGE .EQ. 1 ) E = C
-      IF( KRANGE .EQ. 2 ) E = D
 
       DO 20 I = 1,10000
         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
