@@ -17655,7 +17655,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       ELSE IF( KRANGE .EQ. 2 ) THEN
         E = D
         B2 = 0.220D0
-      IF( KRANGE .EQ. 11 ) THEN
+      ELSE IF( KRANGE .EQ. 11 ) THEN
         E = C
         B2 = 0.220D0
       ELSE IF( KRANGE .EQ. 12 ) THEN
