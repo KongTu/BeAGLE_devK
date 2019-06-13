@@ -17664,6 +17664,8 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       ELSE IF( KRANGE .EQ. 13 ) THEN
         E = C
         B2 = 0.10D0
+      ELSE 
+        E = C
       ENDIF
 
 !First, calculate the normalization:
