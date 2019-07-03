@@ -17645,7 +17645,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
 !Random number generation between 0 and 1     
       C = DT_RNDM(GGPART)
-!Random number generation between 0.99998 and 1, to select higher k momentum tail
+!Random number generation between 0.993 and 1, to select higher k momentum tail
 ! as for k > 3 fm**-1
       D = 0.993D0 + (1.0D0-0.993D0)*DT_RNDM(GGPART)  
 !Different n(k) distribution.  
