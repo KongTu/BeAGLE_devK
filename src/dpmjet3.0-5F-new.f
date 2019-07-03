@@ -17645,9 +17645,12 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 
 !Random number generation between 0 and 1     
       C = DT_RNDM(GGPART)
-!Random number generation between 0.999 and 1, to select higher k momentum tail
-      D = 0.999D0 + (1.0D0-0.999D0)*DT_RNDM(GGPART)  
-!Different n(k) distribution. Option 1 and 11 is the same. 
+!Random number generation between 0.99998 and 1, to select higher k momentum tail
+! as for k > 3 fm**-1
+      D = 0.99998D0 + (1.0D0-0.99998D0)*DT_RNDM(GGPART)  
+!Different n(k) distribution.  
+! 11, 12, 13, 14 are alt 1, 2, 3, 4, respectively.
+
       E = C
       IF( KRANGE .EQ. 1 ) THEN
         E = C
@@ -17657,13 +17660,20 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         B2 = 0.220D0
       ELSE IF( KRANGE .EQ. 11 ) THEN
         E = C
-        B2 = 0.220D0
+        B2 = 0.10D0
       ELSE IF( KRANGE .EQ. 12 ) THEN
         E = C
-        B2 = 0.40D0
+        A2 = 0.00623D0
+        B2 = 0.13D0  
+        C2 = 0.05D0
       ELSE IF( KRANGE .EQ. 13 ) THEN
         E = C
-        B2 = 0.10D0
+        A2 = 0.00923D0
+        B2 = 0.27D0  
+        C2 = 0.001D0
+      ELSE IF( KRANGE .EQ. 14 ) THEN
+        E = C
+        B2 = 0.40D0
       ELSE 
         E = C
       ENDIF
