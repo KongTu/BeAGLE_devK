@@ -17653,6 +17653,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       D = 0.993D0 + (1.0D0-0.993D0)*DT_RNDM(GGPART)  
 !Different n(k) distribution.  
 ! 11, 12, 13, 14 are alt 1, 2, 3, 4, respectively.
+!NN is normalization to unity.
 
       E = C
       IF( KRANGE .EQ. 1 ) THEN
