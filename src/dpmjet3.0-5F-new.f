@@ -17672,7 +17672,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         A2 = 0.00623D0
         B2 = 0.13D0  
         C2 = 0.05D0
-        NN = 1.0D0!0.99788104D0
+        NN = 0.99788104D0
       ELSE IF( KRANGE .EQ. 13 ) THEN
         E = C
         A2 = 0.00923D0
