@@ -17622,7 +17622,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,CDFN,CDF,
+      DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,A1,B1,C1,A2,B2,C2,NN,CDFN,CDF,
      &     CDFPLUS,CDFMINUS
       DOUBLE PRECISION CDFT(1:10000)
 
@@ -17639,9 +17639,12 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       A2 = 0.00623D0
       B2 = 0.220D0
       C2 = 0.0D0 
+      NN = 1.0D0
 
       X0   = 0.0D0
       CDF = 0.0D0
+
+
 
 !Random number generation between 0 and 1     
       C = DT_RNDM(GGPART)
@@ -17655,25 +17658,31 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
       IF( KRANGE .EQ. 1 ) THEN
         E = C
         B2 = 0.220D0
+        NN = 1.0D0
       ELSE IF( KRANGE .EQ. 2 ) THEN
         E = D
         B2 = 0.220D0
+        NN = 1.0D0
       ELSE IF( KRANGE .EQ. 11 ) THEN
         E = C
         B2 = 0.10D0
+        NN = 0.94308118D0
       ELSE IF( KRANGE .EQ. 12 ) THEN
         E = C
         A2 = 0.00623D0
         B2 = 0.13D0  
         C2 = 0.05D0
+        NN = 0.99788104D0
       ELSE IF( KRANGE .EQ. 13 ) THEN
         E = C
         A2 = 0.00923D0
         B2 = 0.27D0  
         C2 = 0.001D0
+        NN = 0.99793068D0
       ELSE IF( KRANGE .EQ. 14 ) THEN
         E = C
         B2 = 0.40D0
+        NN = 1.0160458D0
       ELSE 
         E = C
       ENDIF
@@ -17684,7 +17693,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-        CDF = CDF + (Z0+Z1+Z2)*(4.0D0*PI*X0*X0)*0.001D0
+        CDF = CDF + NN*(Z0+Z1+Z2)*(4.0D0*PI*X0*X0)*0.001D0
         X0 = X0 + 0.001D0
 
    10 CONTINUE
@@ -17701,7 +17710,7 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-        CDF = CDF + (0.001D0/CDFN)*((Z0+Z1+Z2)*(4.0D0*PI*X0*X0))
+        CDF = CDF + (0.001D0/CDFN)*(NN*(Z0+Z1+Z2)*(4.0D0*PI*X0*X0))
         X0 = X0 + 0.001D0
 
         CDFT(I) = CDF
