@@ -5310,6 +5310,7 @@ C            ENDIF
             CALL DT_DFERMI(PABS,NMASS)
          ENDIF
          PABS = PFERM*PABS
+         WRITE(*,*) "PABS FOR PB ~ ", PABS
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
 C           IF (MOD(ILOOP,500).EQ.0) THEN
