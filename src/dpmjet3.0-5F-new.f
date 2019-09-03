@@ -5188,7 +5188,7 @@ C            ENDIF
          IF ( (NMASS .EQ. 2 ) .AND. (IFMDIST .GE. 1) ) THEN
             CALL DT_KFERMI(PABS,IFMDIST)
          ELSE
-            CALL DT_DFERMI(PABS)
+            CALL DT_DFERMI(PABS,NMASS)
          ENDIF
          PABS = PFERM*PABS
 C        IF (PABS.GE.PBIND) THEN
@@ -17583,30 +17583,108 @@ C     SID = SQRT((ONE-COD)*(ONE+COD))
 *
 *===dfermi=============================================================*
 *
-      SUBROUTINE DT_DFERMI(GPART)
+      SUBROUTINE DT_DFERMI(GPART,ANUCLEUS)
 
 ************************************************************************
 * Find largest of three random numbers.                                *
 ************************************************************************
 
+C       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+C       SAVE
+
+C       DIMENSION G(3)
+
+C       DO 10 I=1,3
+C         G(I)=DT_RNDM(GPART)
+   
+C    10 CONTINUE
+C       IF (G(3).LT.G(2)) GOTO 40
+C       IF (G(3).LT.G(1)) GOTO 30
+C       GPART = G(3)
+C    20 RETURN
+C    30 GPART = G(1)
+C       GOTO 20
+C    40 IF (G(2).LT.G(1)) GOTO 30
+C       GPART = G(2)
+C       GOTO 20
+
+************************************************************************
+* Use n(k) in Claudio Ciofi & S. Simula, PRC VOLUME 53, NUMBER 4, 1996.                                *
+************************************************************************
+      
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
+      
+      DOUBLE PRECISION X0,Z0,Z1,Z2,A0,B0,C0,D0,E0,F0,A1,B1,C1,A2,B2,C2,
+     &     CDFN,CDF,CDFPLUS,CDFMINUS
+      DOUBLE PRECISION CDFT(1:10000)
 
-      DIMENSION G(3)
+      PARAMETER (PI=3.14159265359D+00)
 
-      DO 10 I=1,3
-        G(I)=DT_RNDM(GPART)
-   
+      IF( ANUCLEUS .EQ. 208 ) THEN
+        A0 = 1.80D0
+        B0 = 4.77D0
+        C0 = 0.0D0
+        D0 = 25.5D0
+        E0 = 0.0D0
+        F0 = 40.3D0
+      ELSE 
+        A0 = 1.80D0
+        B0 = 4.77D0
+        C0 = 0.0D0
+        D0 = 25.5D0
+        E0 = 0.0D0
+        F0 = 40.3D0
+      ENDIF 
+
+
+!First, calculate the normalization:
+
+      DO 10 I = 1,10000
+        Z0 = A0 * EXP(-B0*X0*X0)
+        Z1 = 1D0 + C0*X0*X0 + D0*X0*X0*X0*X0
+        Z2 = E0*X0*X0*X0*X0*X0*X0 + F0*X0*X0*X0*X0*X0*X0*X0*X0
+
+        CDF = CDF + (Z0*(Z1+Z2))*(4.0D0*PI*X0*X0)*0.001D0
+        X0 = X0 + 0.001D0
+
    10 CONTINUE
-      IF (G(3).LT.G(2)) GOTO 40
-      IF (G(3).LT.G(1)) GOTO 30
-      GPART = G(3)
-   20 RETURN
-   30 GPART = G(1)
-      GOTO 20
-   40 IF (G(2).LT.G(1)) GOTO 30
-      GPART = G(2)
-      GOTO 20
+
+
+!Second, calculate CDF and see if RANDOM NUMBER matches CDF, return X0 value.
+!C and D can be switched using KRANGE (IFMDIST), where 1 is minimum-bias k-
+!distribution, and 2 starts to sample from 99.9% of the cross section (tail of k-momentum)
+
+      CDFN = CDF
+      X0 = 0.000D0
+      CDF = 0.000D0
+
+      DO 20 I = 1,10000
+        Z0 = A0 * EXP(-B0*X0*X0)
+        Z1 = 1D0 + C0*X0*X0 + D0*X0*X0*X0*X0
+        Z2 = E0*X0*X0*X0*X0*X0*X0 + F0*X0*X0*X0*X0*X0*X0*X0*X0
+        CDF = CDF + (0.001D0/CDFN)*(Z0*(Z1+Z2))*(4.0D0*PI*X0*X0))
+        X0 = X0 + 0.001D0
+
+        CDFT(I) = CDF
+        !T for tolorence, this needs to be set dynamically
+        IF( I .EQ. 1 ) THEN
+          T = 0.005D0
+        ELSE
+          T = CDFT(I)-CDFT(I-1)
+        ENDIF
+        
+        CDFPLUS = CDF + T
+        CDFMINUS = CDF + 10D-20
+
+        IF( (E .GE. CDFMINUS) .AND. (E .LT. CDFPLUS) ) THEN
+          GGPART = X0
+          RETURN
+        ELSE
+          GOTO 20
+        ENDIF
+     
+   20 CONTINUE
 
       END
 
