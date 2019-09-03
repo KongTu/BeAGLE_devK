@@ -955,7 +955,7 @@ C     &     ((2.0*ebeamEnucl+PHKK(5,IIMAIN))*PHKK(5,IIMAIN))+masse*masse)
 C      WRITE(*,*) 'Output current event after possible swap'
 C      CALL DT_PYOUTEP(4)
 
-      CALL DT_PICKSRC(PHKK,VHKK,NINT(INUMOD),IIMAIN,IIMAINN)
+C      CALL DT_PICKSRC(PHKK,VHKK,NINT(INUMOD),IIMAIN,IIMAINN)
 * initialize IIMAINN to be -1 in DT_PICKSRC if not in SRC. 
 * otherwise, it would be the index for the SRC partner
 
