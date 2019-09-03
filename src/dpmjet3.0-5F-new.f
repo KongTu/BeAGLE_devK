@@ -2889,10 +2889,10 @@ C     &                LEMCCK,LHADRO(0:9),LSEADI,LEVAPO,IFRAME,ITRSPT
 
             !pythia model produces the event out this subroutine
             !if failed jump out directly, added by liang
-C             IF ((MCGENE.EQ.5 .OR. MCGENE.EQ.6).AND.(IREJ1.GE.1)) THEN
-C                WRITE(*,*) 'KKINC: Event',NEVHKK,'rejected in DT_FICONF.'
-C                GOTO 9999         
-C             ENDIF 
+            IF ((MCGENE.EQ.5 .OR. MCGENE.EQ.6).AND.(IREJ1.GE.1)) THEN
+               WRITE(*,*) 'KKINC: Event',NEVHKK,'rejected in DT_FICONF.'
+               GOTO 9999         
+            ENDIF 
             IF (IREJ1.GT.1) GOTO 101
             IF (IREJ1.EQ.1) GOTO 100
          ENDIF
