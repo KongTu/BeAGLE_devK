@@ -17803,7 +17803,7 @@ C       GOTO 20
         Z0 = A0 * EXP(-B0*X0*X0)
         Z1 = 1D0 + C0*X0*X0 + D0*X0*X0*X0*X0
         Z2 = E0*X0*X0*X0*X0*X0*X0 + F0*X0*X0*X0*X0*X0*X0*X0*X0
-        CDF = CDF + (0.001D0/CDFN)*(Z0*(Z1+Z2))*(4.0D0*PI*X0*X0))
+        CDF = CDF + (0.001D0/CDFN)*Z0*(Z1+Z2)*(4.0D0*PI*X0*X0)
         X0 = X0 + 0.001D0
 
         CDFT(I) = CDF
