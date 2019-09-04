@@ -13004,6 +13004,7 @@ C     ENDIF
 C MDB - fix bug. There can be negative baryons! (e.g. Sigma-)
 C         AIZF(I) = DBLE(NPRO(I)+NHPOS(I))
          AIZF(I) = DBLE(NQ(I))
+         WRITE(*,*) 'NTOT(I) is set to ~ ', NTOT(I)
          IF (NTOT(I).GT.1) THEN
 * masses of residual nuclei in ground state
 
@@ -13209,6 +13210,8 @@ C                     REDORI = ONE / ( FRMRDC )**(2.D+00/3.D+00)
 
       PRCLPR(5) = AMRCL(1)
       PRCLTA(5) = AMRCL(2)
+
+      WRITE(*,*) 'INORCL is set to ~ ', INORCL
 
       IF (ICOR.GT.0) THEN
          IF (INORCL.EQ.0) THEN
