@@ -17778,7 +17778,8 @@ C       GOTO 20
         F0 = 40.3D0
       ENDIF 
 
-
+C     Random number generation between 0 and 1     
+      E = DT_RNDM(GPART)
 !First, calculate the normalization:
 
       DO 10 I = 1,10000
