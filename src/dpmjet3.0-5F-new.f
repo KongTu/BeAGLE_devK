@@ -17819,7 +17819,7 @@ C       GOTO 20
         CDFMINUS = CDF + 10D-20
 
         IF( (E .GE. CDFMINUS) .AND. (E .LT. CDFPLUS) ) THEN
-          GGPART = X0
+          GPART = X0
           RETURN
         ELSE
           GOTO 20
